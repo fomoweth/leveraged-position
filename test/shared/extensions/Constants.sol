@@ -14,6 +14,7 @@ abstract contract Constants {
 	uint160 internal constant MAX_UINT160 = (1 << 160) - 1;
 	uint128 internal constant MAX_UINT128 = (1 << 128) - 1;
 	uint104 internal constant MAX_UINT104 = (1 << 104) - 1;
+	uint64 internal constant MAX_UINT64 = (1 << 64) - 1;
 
 	IUniswapV3Factory internal constant V3_FACTORY = IUniswapV3Factory(0x1F98431c8aD98523631AE4a59f267346ea31F984);
 	IQuoter internal constant V3_QUOTER = IQuoter(0x5e55C9e631FAE526cd4B0526C4818D6e0a9eF0e3);

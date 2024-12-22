@@ -39,7 +39,7 @@ abstract contract Fork is Configured, Common {
 	}
 
 	function fork() internal virtual {
-		uint256 forkBlockNumber = config.getForkBlockNumber();
+		uint256 forkBlockNumber = getForkBlockNumber();
 
 		if (forkBlockNumber != 0) {
 			forkId = vm.createSelectFork(vm.rpcUrl(network), forkBlockNumber);
@@ -47,7 +47,7 @@ abstract contract Fork is Configured, Common {
 			forkId = vm.createSelectFork(vm.rpcUrl(network));
 		}
 
-		vm.chainId(config.getChainId());
+		vm.chainId(getChainId());
 	}
 
 	function labelAll() internal virtual {
