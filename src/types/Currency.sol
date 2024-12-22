@@ -272,6 +272,10 @@ library CurrencyLibrary {
 		}
 	}
 
+	function toAddress(Currency currency) internal pure returns (address) {
+		return Currency.unwrap(currency);
+	}
+
 	function toId(Currency currency) internal pure returns (bytes32) {
 		return bytes32(uint256(uint160(Currency.unwrap(currency))));
 	}

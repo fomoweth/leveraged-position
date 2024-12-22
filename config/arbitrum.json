@@ -1,0 +1,389 @@
+{
+	"chainId": 42161,
+	"rpcAlias": "arbitrum",
+	"forkBlockNumber": 287162809,
+	"WETH": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+	"stETH": "0x0000000000000000000000000000000000000000",
+	"WBTC": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+	"DAI": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+	"USDC": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+	"USDCe": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+	"USDT": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+	"AAVE": "0xba5DdD1f9d7F570dc94a51479a000E3BCE967196",
+	"COMP": "0x354A6dA3fcde098F8389cad84b0182725c6C91dE",
+	"LINK": "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4",
+	"UNI": "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0",
+	"wrappedNative": "WETH",
+	"intermediateCurrencies": ["WETH", "USDC", "USDCe"],
+	"stablecoins": ["DAI", "USDC", "USDCe", "USDT"],
+	"aave-v3": {
+		"aave": {
+			"context": {
+				"protocol": "Aave",
+				"network": "Arbitrum",
+				"abbreviation": "Arb"
+			},
+			"aclAdmin": "0xFF1137243698CaA18EE364Cc966CF0e02A4e6327",
+			"aclManager": "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B",
+			"addressesProvider": "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
+			"dataProvider": "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654",
+			"pool": "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+			"oracle": "0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7",
+			"rewardsController": "0x929EC64c34a17401F460460D4B9390518E5B473e",
+			"emissionManager": "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73",
+			"collector": "0x053D55f9B5AF8694c503EB288a1B7E552f590710"
+		}
+	},
+	"comp-v3": {
+		"governor": "0x3fB4d38ea7EC20D91917c09591490Eeda38Cf88A",
+		"configurator": "0xb21b06D71c75973babdE35b49fFDAc3F82Ad3775",
+		"rewards": "0x88730d254A2f7e6AC8388c3198aFd694bA9f7fae"
+	},
+	"markets": {
+		"aave-v3": {
+			"aave": [
+				{
+					"symbol": "WETH",
+					"underlying": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+					"aToken": "0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8",
+					"vdToken": "0x0c84331e39d6658Cd6e6b9ba04736cC4c4734351",
+					"oracle": "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
+					"ltv": 8000,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "WBTC",
+					"underlying": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+					"aToken": "0x078f358208685046a11C85e8ad32895DED33A249",
+					"vdToken": "0x92b42c66840C7AD907b4BF74879FF3eF7c529473",
+					"oracle": "0x6ce185860a4963106506C203335A2910413708e9",
+					"ltv": 7300,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "weETH",
+					"underlying": "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+					"aToken": "0x8437d7C167dFB82ED4Cb79CD44B7a32A1dd95c77",
+					"vdToken": "0x3ca5FA07689F266e907439aFd1fBB59c44fe12f6",
+					"oracle": "0x517276B5972C4Db7E88B9F76Ee500E888a2D73C3",
+					"ltv": 7250,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDC",
+					"underlying": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+					"aToken": "0x724dc807b04555b71ed48a6896b6F41593b8C637",
+					"vdToken": "0xf611aEb5013fD2c0511c9CD55c7dc5C1140741A6",
+					"oracle": "0xDe25a88F87FEd9F8999fAbF6729dCB121893623C",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "wstETH",
+					"underlying": "0x5979D7b546E38E414F7E9822514be443A4800529",
+					"aToken": "0x513c7E3a9c69cA3e22550eF58AC1C0088e918FFf",
+					"vdToken": "0x77CA01483f379E58174739308945f044e1a764dc",
+					"oracle": "0x87fE1503beFBF98C35c7526B0c488d950F822C0F",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDT",
+					"underlying": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+					"aToken": "0x6ab707Aca953eDAeFBc4fD23bA73294241490620",
+					"vdToken": "0xfb00AC187a8Eb5AFAE4eACE434F493Eb62672df7",
+					"oracle": "0x84dC1C52D7C340AA54B4e8799FBB31C3D28E67aD",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "ARB",
+					"underlying": "0x912CE59144191C1204E64559FE8253a0e49E6548",
+					"aToken": "0x6533afac2E7BCCB20dca161449A13A32D391fb00",
+					"vdToken": "0x44705f578135cC5d703b4c9c122528C73Eb87145",
+					"oracle": "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6",
+					"ltv": 6300,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "LINK",
+					"underlying": "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4",
+					"aToken": "0x191c10Aa4AF7C30e871E70C95dB0E4eb77237530",
+					"vdToken": "0x953A573793604aF8d41F306FEb8274190dB4aE0e",
+					"oracle": "0x86E53CF1B870786351Da77A57575e79CB55812CB",
+					"ltv": 6600,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "rETH",
+					"underlying": "0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8",
+					"aToken": "0x8Eb270e296023E9D92081fdF967dDd7878724424",
+					"vdToken": "0xCE186F6Cccb0c955445bb9d10C59caE488Fea559",
+					"oracle": "0x256f33FC0110B1297f78f48524631D30B752480D",
+					"ltv": 6900,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "DAI",
+					"underlying": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+					"aToken": "0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE",
+					"vdToken": "0x8619d80FB0141ba7F184CbF22fd724116D9f7ffC",
+					"oracle": "0x4a838a3Dac6633bB1fd932B6f356DecFCAf7803D",
+					"ltv": 6300,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDC.e",
+					"underlying": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+					"aToken": "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
+					"vdToken": "0xFCCf3cAbbe80101232d343252614b6A3eE81C989",
+					"oracle": "0xDe25a88F87FEd9F8999fAbF6729dCB121893623C",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "GHO",
+					"underlying": "0x7dfF72693f6A4149b17e7C6314655f6A9F7c8B33",
+					"aToken": "0xeBe517846d0F36eCEd99C735cbF6131e1fEB775D",
+					"vdToken": "0x18248226C16BF76c032817854E7C83a2113B4f06",
+					"oracle": "0xB05984aD83C20b3ADE7bf97a9a0Cb539DDE28DBb",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "AAVE",
+					"underlying": "0xba5DdD1f9d7F570dc94a51479a000E3BCE967196",
+					"aToken": "0xf329e36C7bF6E5E86ce2150875a84Ce77f477375",
+					"vdToken": "0xE80761Ea617F66F96274eA5e8c37f03960ecC679",
+					"oracle": "0xaD1d5344AaDE45F43E596773Bcc4c423EAbdD034",
+					"ltv": 6300,
+					"isCollateral": true,
+					"isBorrowable": false,
+					"isIsolated": false
+				},
+				{
+					"symbol": "LUSD",
+					"underlying": "0x93b346b6BC2548dA6A1E7d98E9a421B42541425b",
+					"aToken": "0x8ffDf2DE812095b1D19CB146E4c004587C0A0692",
+					"vdToken": "0xA8669021776Bc142DfcA87c21b4A52595bCbB40a",
+					"oracle": "0x341B110bDF665A20F0D5f84A92FcAF5EbeEBC629",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "FRAX",
+					"underlying": "0x17FC002b466eEc40DaE837Fc4bE5c67993ddBd6F",
+					"aToken": "0x38d693cE1dF5AaDF7bC62595A37D667aD57922e5",
+					"vdToken": "0x5D557B07776D12967914379C71a1310e917C7555",
+					"oracle": "0x06919EB75Bd6BA817D38CC70C1CA588ac7a01C10",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": true
+				}
+			]
+		},
+		"comp-v3": [
+			{
+				"base": "WETH",
+				"symbol": "cWETHv3",
+				"comet": "0x6f7D514bbD4aFf3BcD1140B7344b32f063dEe486",
+				"underlying": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+				"feed": "0xdB7EdFa090061D9367CbEAF6bE16ECbDE596676C",
+				"assets": [
+					{
+						"symbol": "weETH",
+						"underlying": "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+						"feed": "0xd3cf278F135D9831D2bF28F6672a4575906CA724",
+						"ltv": 9000
+					},
+					{
+						"symbol": "rETH",
+						"underlying": "0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8",
+						"feed": "0x970FfD8E335B8fa4cd5c869c7caC3a90671d5Dc3",
+						"ltv": 9000
+					},
+					{
+						"symbol": "wstETH",
+						"underlying": "0x5979D7b546E38E414F7E9822514be443A4800529",
+						"feed": "0x6C987dDE50dB1dcDd32Cd4175778C2a291978E2a",
+						"ltv": 8800
+					},
+					{
+						"symbol": "WBTC",
+						"underlying": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+						"feed": "0xFa454dE61b317b6535A0C462267208E8FdB89f45",
+						"ltv": 8000
+					},
+					{
+						"symbol": "rsETH",
+						"underlying": "0x4186BFC76E2E237523CBC30FD220FE055156b41F",
+						"feed": "0x3870FAc3De911c12A57E5a2532D15aD8Ca275A60",
+						"ltv": 8800
+					},
+					{
+						"symbol": "USDT",
+						"underlying": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+						"feed": "0x84E93EC6170ED630f5ebD89A1AAE72d4F63f2713",
+						"ltv": 8000
+					},
+					{
+						"symbol": "USDC",
+						"underlying": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+						"feed": "0x443EA0340cb75a160F31A440722dec7b5bc3C2E9",
+						"ltv": 8000
+					},
+					{
+						"symbol": "ezETH",
+						"underlying": "0x2416092f143378750bb29b79eD961ab195CcEea5",
+						"feed": "0x72e9B6F907365d76C6192aD49C0C5ba356b7Fa48",
+						"ltv": 8800
+					}
+				]
+			},
+			{
+				"base": "USDC",
+				"symbol": "cUSDCv3",
+				"comet": "0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf",
+				"underlying": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+				"feed": "0x50834F3163758fcC1Df9973b6e91f0F0F0434aD3",
+				"assets": [
+					{
+						"symbol": "ARB",
+						"underlying": "0x912CE59144191C1204E64559FE8253a0e49E6548",
+						"feed": "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6",
+						"ltv": 7000
+					},
+					{
+						"symbol": "GMX",
+						"underlying": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a",
+						"feed": "0xDB98056FecFff59D032aB628337A4887110df3dB",
+						"ltv": 6000
+					},
+					{
+						"symbol": "WETH",
+						"underlying": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+						"feed": "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
+						"ltv": 8300
+					},
+					{
+						"symbol": "WBTC",
+						"underlying": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+						"feed": "0xd0C7101eACbB49F3deCcCc166d238410D6D46d57",
+						"ltv": 7500
+					},
+					{
+						"symbol": "wstETH",
+						"underlying": "0x5979D7b546E38E414F7E9822514be443A4800529",
+						"feed": "0xe165155c34fE4cBfC55Fc554437907BDb1Af7e3e",
+						"ltv": 8000
+					},
+					{
+						"symbol": "ezETH",
+						"underlying": "0x2416092f143378750bb29b79eD961ab195CcEea5",
+						"feed": "0xC49399814452B41dA8a7cd76a159f5515cb3e493",
+						"ltv": 8000
+					}
+				]
+			},
+			{
+				"base": "USDC.e",
+				"symbol": "cUSDCev3",
+				"comet": "0xA5EDBDD9646f8dFF606d7448e414884C7d905dCA",
+				"underlying": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+				"feed": "0x50834F3163758fcC1Df9973b6e91f0F0F0434aD3",
+				"assets": [
+					{
+						"symbol": "ARB",
+						"underlying": "0x912CE59144191C1204E64559FE8253a0e49E6548",
+						"feed": "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6",
+						"ltv": 5500
+					},
+					{
+						"symbol": "GMX",
+						"underlying": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a",
+						"feed": "0xDB98056FecFff59D032aB628337A4887110df3dB",
+						"ltv": 4000
+					},
+					{
+						"symbol": "WETH",
+						"underlying": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+						"feed": "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
+						"ltv": 7800
+					},
+					{
+						"symbol": "WBTC",
+						"underlying": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+						"feed": "0xd0C7101eACbB49F3deCcCc166d238410D6D46d57",
+						"ltv": 7000
+					}
+				]
+			},
+			{
+				"base": "USDT",
+				"symbol": "cUSDTv3",
+				"comet": "0xd98Be00b5D27fc98112BdE293e487f8D4cA57d07",
+				"underlying": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+				"feed": "0x3f3f5dF88dC9F13eac63DF89EC16ef6e7E25DdE7",
+				"assets": [
+					{
+						"symbol": "ARB",
+						"underlying": "0x912CE59144191C1204E64559FE8253a0e49E6548",
+						"feed": "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6",
+						"ltv": 7000
+					},
+					{
+						"symbol": "WETH",
+						"underlying": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+						"feed": "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
+						"ltv": 8500
+					},
+					{
+						"symbol": "wstETH",
+						"underlying": "0x5979D7b546E38E414F7E9822514be443A4800529",
+						"feed": "0xe165155c34fE4cBfC55Fc554437907BDb1Af7e3e",
+						"ltv": 8000
+					},
+					{
+						"symbol": "WBTC",
+						"underlying": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+						"feed": "0xd0C7101eACbB49F3deCcCc166d238410D6D46d57",
+						"ltv": 7000
+					},
+					{
+						"symbol": "GMX",
+						"underlying": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a",
+						"feed": "0xDB98056FecFff59D032aB628337A4887110df3dB",
+						"ltv": 6000
+					}
+				]
+			}
+		]
+	}
+}

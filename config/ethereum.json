@@ -1,0 +1,822 @@
+{
+	"chainId": 1,
+	"rpcAlias": "ethereum",
+	"forkBlockNumber": 21452636,
+	"WETH": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+	"stETH": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+	"wstETH": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+	"WBTC": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+	"DAI": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+	"USDC": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+	"USDCe": "0x0000000000000000000000000000000000000000",
+	"USDT": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+	"AAVE": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+	"COMP": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+	"LINK": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+	"UNI": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+	"wrappedNative": "WETH",
+	"intermediateCurrencies": ["WETH", "USDC", "USDT"],
+	"stablecoins": ["DAI", "USDC", "USDT"],
+	"aave-v3": {
+		"aave": {
+			"context": {
+				"protocol": "Aave",
+				"network": "Ethereum",
+				"abbreviation": "Eth"
+			},
+			"aclAdmin": "0x5300A1a15135EA4dc7aD5a167152C01EFc9b192A",
+			"aclManager": "0xc2aaCf6553D20d1e9d78E365AAba8032af9c85b0",
+			"addressesProvider": "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e",
+			"dataProvider": "0x41393e5e337606dc3821075Af65AeE84D7688CBD",
+			"pool": "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+			"oracle": "0x54586bE62E3c3580375aE3723C145253060Ca0C2",
+			"rewardsController": "0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb",
+			"emissionManager": "0xA8e351C7Ab1b75A2134A418701919c462932DF79",
+			"collector": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c"
+		},
+		"etherfi": {
+			"context": {
+				"protocol": "EtherFi",
+				"network": "Ethereum EtherFi",
+				"abbreviation": "EthEtherFi"
+			},
+			"aclAdmin": "0x5300A1a15135EA4dc7aD5a167152C01EFc9b192A",
+			"aclManager": "0x3cE8E2eb6501d4705477643E96881B1bef6A2DB3",
+			"addressesProvider": "0xeBa440B438Ad808101d1c451C1C5322c90BEFCdA",
+			"dataProvider": "0xE7d490885A68f00d9886508DF281D67263ed5758",
+			"pool": "0x0AA97c284e98396202b6A04024F5E2c65026F3c0",
+			"oracle": "0x43b64f28A678944E0655404B0B98E443851cC34F",
+			"rewardsController": "0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb",
+			"emissionManager": "0x223d844fc4B006D67c0cDbd39371A9F73f69d974",
+			"collector": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c"
+		},
+		"lido": {
+			"context": {
+				"protocol": "Lido",
+				"network": "Ethereum Lido",
+				"abbreviation": "EthLido"
+			},
+			"aclAdmin": "0x5300A1a15135EA4dc7aD5a167152C01EFc9b192A",
+			"aclManager": "0x013E2C7567b6231e865BB9273F8c7656103611c0",
+			"addressesProvider": "0xcfBf336fe147D643B9Cb705648500e101504B16d",
+			"dataProvider": "0x08795CFE08C7a81dCDFf482BbAAF474B240f31cD",
+			"pool": "0x4e033931ad43597d96D6bcc25c280717730B58B1",
+			"oracle": "0xE3C061981870C0C7b1f3C4F4bB36B95f1F260BE6",
+			"rewardsController": "0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb",
+			"emissionManager": "0x223d844fc4B006D67c0cDbd39371A9F73f69d974",
+			"collector": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c"
+		}
+	},
+	"comp-v3": {
+		"governor": "0x6d903f6003cca6255D85CcA4D3B5E5146dC33925",
+		"configurator": "0x316f9708bB98af7dA9c68C1C3b5e79039cD336E3",
+		"rewards": "0x1B0e765F6224C21223AeA2af16c1C46E38885a40"
+	},
+	"markets": {
+		"aave-v3": {
+			"aave": [
+				{
+					"symbol": "WETH",
+					"underlying": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+					"aToken": "0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8",
+					"vdToken": "0xeA51d7853EEFb32b6ee06b1C12E6dcCA88Be0fFE",
+					"oracle": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+					"ltv": 8050,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "wstETH",
+					"underlying": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+					"aToken": "0x0B925eD163218f6662a35e0f0371Ac234f9E9371",
+					"vdToken": "0xC96113eED8cAB59cD8A66813bCB0cEb29F06D2e4",
+					"oracle": "0xB4aB0c94159bc2d8C133946E7241368fc2F2a010",
+					"ltv": 7850,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "weETH",
+					"underlying": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+					"aToken": "0xBdfa7b7893081B35Fb54027489e2Bc7A38275129",
+					"vdToken": "0x77ad9BF13a52517AD698D65913e8D381300c8Bf3",
+					"oracle": "0xf112aF6F0A332B815fbEf3Ff932c057E570b62d3",
+					"ltv": 7250,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "WBTC",
+					"underlying": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+					"aToken": "0x5Ee5bf7ae06D1Be5997A1A72006FE6C607eC6DE8",
+					"vdToken": "0x40aAbEf1aa8f0eEc637E0E7d92fbfFB2F26A8b7B",
+					"oracle": "0x230E0321Cf38F09e247e50Afc7801EA2351fe56F",
+					"ltv": 7300,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDT",
+					"underlying": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+					"aToken": "0x23878914EFE38d27C4D67Ab83ed1b93A74D4086a",
+					"vdToken": "0x6df1C1E379bC5a00a7b4C6e67A203333772f45A8",
+					"oracle": "0xC26D4a1c46d884cfF6dE9800B6aE7A8Cf48B4Ff8",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDC",
+					"underlying": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+					"aToken": "0x98C23E9d8f34FEFb1B7BD6a91B7FF122F4e16F5c",
+					"vdToken": "0x72E95b8931767C79bA4EeE721354d6E99a61D004",
+					"oracle": "0x736bF902680e68989886e9807CD7Db4B3E015d3C",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "cbBTC",
+					"underlying": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+					"aToken": "0x5c647cE0Ae10658ec44FA4E11A51c96e94efd1Dd",
+					"vdToken": "0xeB284A70557EFe3591b9e6D9D720040E02c54a4d",
+					"oracle": "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
+					"ltv": 7300,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDS",
+					"underlying": "0xdC035D45d973E3EC169d2276DDab16f1e407384F",
+					"aToken": "0x32a6268f9Ba3642Dda7892aDd74f1D34469A4259",
+					"vdToken": "0x490E0E6255bF65b43E2e02F7acB783c5e04572Ff",
+					"oracle": "0x4F01b76391A05d32B20FA2d05dD5963eE8db20E6",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "LINK",
+					"underlying": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+					"aToken": "0x5E8C8A7243651DB1384C0dDfDbE39761E8e7E51a",
+					"vdToken": "0x4228F8895C7dDA20227F6a5c6751b8Ebf19a6ba8",
+					"oracle": "0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c",
+					"ltv": 6600,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "AAVE",
+					"underlying": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+					"aToken": "0xA700b4eB416Be35b2911fd5Dee80678ff64fF6C9",
+					"vdToken": "0xBae535520Abd9f8C85E58929e0006A2c8B372F74",
+					"oracle": "0x547a514d5e3769680Ce22B2361c10Ea13619e8a9",
+					"ltv": 6300,
+					"isCollateral": true,
+					"isBorrowable": false,
+					"isIsolated": false
+				},
+				{
+					"symbol": "DAI",
+					"underlying": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+					"aToken": "0x018008bfb33d285247A21d44E50697654f754e63",
+					"vdToken": "0xcF8d0c70c850859266f5C338b38F9D663181C314",
+					"oracle": "0xaEb897E1Dc6BbdceD3B9D551C71a8cf172F27AC4",
+					"ltv": 6300,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "rETH",
+					"underlying": "0xae78736Cd615f374D3085123A210448E74Fc6393",
+					"aToken": "0xCc9EE9483f662091a1de4795249E24aC0aC2630f",
+					"vdToken": "0xae8593DD575FE29A9745056aA91C4b746eee62C8",
+					"oracle": "0x5AE8365D0a30D67145f0c55A08760C250559dB64",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "tBTC",
+					"underlying": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
+					"aToken": "0x10Ac93971cdb1F5c778144084242374473c350Da",
+					"vdToken": "0xAC50890a80A2731eb1eA2e9B4F29569CeB06D960",
+					"oracle": "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
+					"ltv": 7300,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "rsETH",
+					"underlying": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
+					"aToken": "0x2D62109243b87C4bA3EE7bA1D91B0dD0A074d7b1",
+					"vdToken": "0x6De3E52A1B7294A34e271a508082b1Ff4a37E30e",
+					"oracle": "0x47F52B2e43D0386cF161e001835b03Ad49889e3b",
+					"ltv": 7200,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "UNI",
+					"underlying": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+					"aToken": "0xF6D2224916DDFbbab6e6bd0D1B7034f4Ae0CaB18",
+					"vdToken": "0xF64178Ebd2E2719F2B1233bCb5Ef6DB4bCc4d09a",
+					"oracle": "0x553303d460EE0afB37EdFf9bE42922D8FF63220e",
+					"ltv": 6500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "MKR",
+					"underlying": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+					"aToken": "0x8A458A9dc9048e005d22849F470891b840296619",
+					"vdToken": "0x6Efc73E54E41b27d2134fF9f98F15550f30DF9B1",
+					"oracle": "0xec1D1B3b0443256cc3860e24a46F108e699484Aa",
+					"ltv": 6500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "cbETH",
+					"underlying": "0xBe9895146f7AF43049ca1c1AE358B0541Ea49704",
+					"aToken": "0x977b6fc5dE62598B08C85AC8Cf2b745874E8b78c",
+					"vdToken": "0x0c91bcA95b5FE69164cE583A2ec9429A569798Ed",
+					"oracle": "0x6243d2F41b4ec944F731f647589E28d9745a2674",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "ETHx",
+					"underlying": "0xA35b1B31Ce002FBF2058D22F30f95D405200A15b",
+					"aToken": "0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002",
+					"vdToken": "0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b",
+					"oracle": "0xD6270dAabFe4862306190298C2B48fed9e15C847",
+					"ltv": 7450,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDe",
+					"underlying": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
+					"aToken": "0x4F5923Fc5FD4a93352581b38B7cD26943012DECF",
+					"vdToken": "0x015396E1F286289aE23a762088E863b3ec465145",
+					"oracle": "0x55B6C4D3E8A27b8A1F5a263321b602e0fdEEcC17",
+					"ltv": 7200,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "osETH",
+					"underlying": "0xf1C9acDc66974dFB6dEcB12aA385b9cD01190E38",
+					"aToken": "0x927709711794F3De5DdBF1D176bEE2D55Ba13c21",
+					"vdToken": "0x8838eefF2af391863E1Bb8b1dF563F86743a8470",
+					"oracle": "0x0A2AF898cEc35197e6944D9E0F525C2626393442",
+					"ltv": 7250,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "BAL",
+					"underlying": "0xba100000625a3754423978a60c9317c58a424e3D",
+					"aToken": "0x2516E7B3F76294e03C42AA4c5b5b4DCE9C436fB8",
+					"vdToken": "0x3D3efceb4Ff0966D34d9545D3A2fa2dcdBf451f2",
+					"oracle": "0xdF2917806E30300537aEB49A7663062F4d1F2b5F",
+					"ltv": 5700,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "PYUSD",
+					"underlying": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8",
+					"aToken": "0x0C0d01AbF3e6aDfcA0989eBbA9d6e85dD58EaB1E",
+					"vdToken": "0x57B67e4DE077085Fd0AF2174e9c14871BE664546",
+					"oracle": "0x150bAe7Ce224555D39AfdBc6Cb4B8204E594E022",
+					"ltv": 7500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "SNX",
+					"underlying": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+					"aToken": "0xC7B4c17861357B8ABB91F25581E7263E08DCB59c",
+					"vdToken": "0x8d0de040e8aAd872eC3c33A3776dE9152D3c34ca",
+					"oracle": "0xDC3EA94CD0AC27d9A86C180091e7f78C683d3699",
+					"ltv": 4900,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "RPL",
+					"underlying": "0xD33526068D116cE69F19A9ee46F0bd304F21A51f",
+					"aToken": "0xB76CF92076adBF1D9C39294FA8e7A67579FDe357",
+					"vdToken": "0x8988ECA19D502fd8b9CCd03fA3bD20a6f599bc2A",
+					"oracle": "0x4E155eD98aFE9034b7A5962f6C84c86d869daA9d",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "ENS",
+					"underlying": "0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72",
+					"aToken": "0x545bD6c032eFdde65A377A6719DEF2796C8E0f2e",
+					"vdToken": "0xd180D7fdD4092f07428eFE801E17BC03576b3192",
+					"oracle": "0x5C00128d4d1c2F4f652C267d7bcdD7aC99C16E16",
+					"ltv": 3900,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "LDO",
+					"underlying": "0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32",
+					"aToken": "0x9A44fd41566876A39655f74971a3A6eA0a17a454",
+					"vdToken": "0xc30808705C01289A3D306ca9CAB081Ba9114eC82",
+					"oracle": "0xb01e6C9af83879B8e06a092f0DD94309c0D497E4",
+					"ltv": 4000,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "CRV",
+					"underlying": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+					"aToken": "0x7B95Ec873268a6BFC6427e7a28e396Db9D0ebc65",
+					"vdToken": "0x1b7D3F4b3c032a5AE656e30eeA4e8E1Ba376068F",
+					"oracle": "0xCd627aA160A6fA45Eb793D19Ef54f5062F20f33f",
+					"ltv": 3500,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "LUSD",
+					"underlying": "0x5f98805A4E8be255a32880FDeC7F6728C6568bA0",
+					"aToken": "0x3Fe6a295459FAe07DF8A0ceCC36F37160FE86AA9",
+					"vdToken": "0x33652e48e4B74D18520f11BfE58Edd2ED2cEc5A2",
+					"oracle": "0x9eCdfaCca946614cc32aF63F3DBe50959244F3af",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "1INCH",
+					"underlying": "0x111111111117dC0aa78b770fA6A738034120C302",
+					"aToken": "0x71Aef7b30728b9BB371578f36c5A1f1502a5723e",
+					"vdToken": "0xA38fCa8c6Bf9BdA52E76EB78f08CaA3BE7c5A970",
+					"oracle": "0xc929ad75B72593967DE83E7F7Cda0493458261D9",
+					"ltv": 5700,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": true
+				},
+				{
+					"symbol": "crvUSD",
+					"underlying": "0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E",
+					"aToken": "0xb82fa9f31612989525992FCfBB09AB22Eff5c85A",
+					"vdToken": "0x028f7886F3e937f8479efaD64f31B3fE1119857a",
+					"oracle": "0x02AeE5b225366302339748951E1a924617b8814F",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "FRAX",
+					"underlying": "0x853d955aCEf822Db058eb8505911ED77F175b99e",
+					"aToken": "0xd4e245848d6E1220DBE62e155d89fa327E43CB06",
+					"vdToken": "0x88B8358F5BC87c2D7E116cCA5b65A9eEb2c5EA3F",
+					"oracle": "0x45D270263BBee500CF8adcf2AbC0aC227097b036",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": true
+				}
+			],
+			"etherfi": [
+				{
+					"symbol": "weETH",
+					"underlying": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+					"aToken": "0xbe1F842e7e0afd2c2322aae5d34bA899544b29db",
+					"vdToken": "0x16264412CB72F0d16A446f7D928Dd0D822810048",
+					"oracle": "0xf112aF6F0A332B815fbEf3Ff932c057E570b62d3",
+					"ltv": 7800,
+					"isCollateral": true,
+					"isBorrowable": false,
+					"isIsolated": false
+				},
+				{
+					"symbol": "FRAX",
+					"underlying": "0x853d955aCEf822Db058eb8505911ED77F175b99e",
+					"aToken": "0x6914ECCf50837dC61b43ee478a9BD9B439648956",
+					"vdToken": "0xfd3aDA5AAbdc6531C7C2AC46c00eBf870f5a0E6B",
+					"oracle": "0x45D270263BBee500CF8adcf2AbC0aC227097b036",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDC",
+					"underlying": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+					"aToken": "0x7380c583cDe4409eFF5DD3320D93a45D96B80E2e",
+					"vdToken": "0x9355032d747f1e08F8720CD01950E652eE15cdB7",
+					"oracle": "0x736bF902680e68989886e9807CD7Db4B3E015d3C",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "PYUSD",
+					"underlying": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8",
+					"aToken": "0xdF7f48892244C6106EA784609f7de10AB36F9c7e",
+					"vdToken": "0xD2cf07dEE40d3D530D15b88d689f5cd97A31FC3D",
+					"oracle": "0x150bAe7Ce224555D39AfdBc6Cb4B8204E594E022",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				}
+			],
+			"lido": [
+				{
+					"symbol": "wstETH",
+					"underlying": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+					"aToken": "0xC035a7cf15375cE2706766804551791aD035E0C2",
+					"vdToken": "0xE439edd2625772AA635B437C099C607B6eb7d35f",
+					"oracle": "0xB4aB0c94159bc2d8C133946E7241368fc2F2a010",
+					"ltv": 8000,
+					"isCollateral": true,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "WETH",
+					"underlying": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+					"aToken": "0xfA1fDbBD71B0aA16162D76914d69cD8CB3Ef92da",
+					"vdToken": "0x91b7d78BF92db564221f6B5AeE744D1727d1Dd1e",
+					"oracle": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDS",
+					"underlying": "0xdC035D45d973E3EC169d2276DDab16f1e407384F",
+					"aToken": "0x09AA30b182488f769a9824F15E6Ce58591Da4781",
+					"vdToken": "0x2D9fe18b6c35FE439cC15D932cc5C943bf2d901E",
+					"oracle": "0x4F01b76391A05d32B20FA2d05dD5963eE8db20E6",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "USDC",
+					"underlying": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+					"aToken": "0x2A1FBcb52Ed4d9b23daD17E1E8Aed4BB0E6079b8",
+					"vdToken": "0xeD90dE2D824Ee766c6Fd22E90b12e598f681dc9F",
+					"oracle": "0x736bF902680e68989886e9807CD7Db4B3E015d3C",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				},
+				{
+					"symbol": "ezETH",
+					"underlying": "0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+					"aToken": "0x74e5664394998f13B07aF42446380ACef637969f",
+					"vdToken": "0x08e1bba76D27841dD91FAb4b3a636A0D5CF8c3E9",
+					"oracle": "0x68C9c7Bf43DBd0EBab102116bc7C3C9f7d9297Ee",
+					"ltv": 50,
+					"isCollateral": false,
+					"isBorrowable": false,
+					"isIsolated": false
+				},
+				{
+					"symbol": "sUSDe",
+					"underlying": "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497",
+					"aToken": "0xc2015641564a5914A17CB9A92eC8d8feCfa8f2D0",
+					"vdToken": "0x2ABbAab3EF4e4A899d39e7EC996b5715E76b399a",
+					"oracle": "0xb37aE8aBa6C0C1Bf2c509fc06E11aa4AF29B665A",
+					"ltv": 50,
+					"isCollateral": false,
+					"isBorrowable": false,
+					"isIsolated": false
+				},
+				{
+					"symbol": "GHO",
+					"underlying": "0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f",
+					"aToken": "0x18eFE565A5373f430e2F809b97De30335B3ad96A",
+					"vdToken": "0x18577F0f4A0B2Ee6F4048dB51c7acd8699F97DB8",
+					"oracle": "0xD110cac5d8682A3b045D5524a9903E031d70FCCd",
+					"ltv": 0,
+					"isCollateral": false,
+					"isBorrowable": true,
+					"isIsolated": false
+				}
+			]
+		},
+		"comp-v3": [
+			{
+				"base": "WETH",
+				"symbol": "cWETHv3",
+				"comet": "0xA17581A9E3356d9A858b789D68B4d866e593aE94",
+				"underlying": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+				"feed": "0xD72ac1bCE9177CFe7aEb5d0516a38c88a64cE0AB",
+				"assets": [
+					{
+						"symbol": "cbETH",
+						"underlying": "0xBe9895146f7AF43049ca1c1AE358B0541Ea49704",
+						"feed": "0x23a982b74a3236A5F2297856d4391B2edBBB5549",
+						"ltv": 9000
+					},
+					{
+						"symbol": "wstETH",
+						"underlying": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+						"feed": "0x4F67e4d9BD67eFa28236013288737D39AeF48e79",
+						"ltv": 9000
+					},
+					{
+						"symbol": "rETH",
+						"underlying": "0xae78736Cd615f374D3085123A210448E74Fc6393",
+						"feed": "0xA3A7fB5963D1d69B95EEC4957f77678EF073Ba08",
+						"ltv": 9000
+					},
+					{
+						"symbol": "rsETH",
+						"underlying": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
+						"feed": "0xFa454dE61b317b6535A0C462267208E8FdB89f45",
+						"ltv": 8800
+					},
+					{
+						"symbol": "weETH",
+						"underlying": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+						"feed": "0x1Ad4CEBa9f8135A557bBe317DB62Aa125C330F26",
+						"ltv": 9000
+					},
+					{
+						"symbol": "osETH",
+						"underlying": "0xf1C9acDc66974dFB6dEcB12aA385b9cD01190E38",
+						"feed": "0x66F5AfDaD14b30816b47b707240D1E8E3344D04d",
+						"ltv": 8000
+					},
+					{
+						"symbol": "WBTC",
+						"underlying": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+						"feed": "0xd98Be00b5D27fc98112BdE293e487f8D4cA57d07",
+						"ltv": 8000
+					},
+					{
+						"symbol": "ezETH",
+						"underlying": "0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+						"feed": "0xdE43600De5016B50752cc2615332d8cCBED6EC1b",
+						"ltv": 8800
+					},
+					{
+						"symbol": "cbBTC",
+						"underlying": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+						"feed": "0x57A71A9C632b2e6D8b0eB9A157888A3Fc87400D1",
+						"ltv": 8000
+					},
+					{
+						"symbol": "rswETH",
+						"underlying": "0xFAe103DC9cf190eD75350761e95403b7b8aFa6c0",
+						"feed": "0xDd18688Bb75Af704f3Fb1183e459C4d4D41132D9",
+						"ltv": 8000
+					},
+					{
+						"symbol": "tBTC",
+						"underlying": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
+						"feed": "0x1933F7e5f8B0423fbAb28cE9c8C39C2cC414027B",
+						"ltv": 7600
+					},
+					{
+						"symbol": "ETHx",
+						"underlying": "0xA35b1B31Ce002FBF2058D22F30f95D405200A15b",
+						"feed": "0x9F2F60f38BBc275aF8F88a21c0e2BfE751E97C1f",
+						"ltv": 8500
+					}
+				]
+			},
+			{
+				"base": "wstETH",
+				"symbol": "cWstETHv3",
+				"comet": "0x3D0bb1ccaB520A66e607822fC55BC921738fAFE3",
+				"underlying": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+				"feed": "0x72e9B6F907365d76C6192aD49C0C5ba356b7Fa48",
+				"assets": [
+					{
+						"symbol": "rsETH",
+						"underlying": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
+						"feed": "0xC49399814452B41dA8a7cd76a159f5515cb3e493",
+						"ltv": 8800
+					},
+					{
+						"symbol": "ezETH",
+						"underlying": "0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+						"feed": "0xc7986B6318C3f3aB5bE12BAF22892961158D3c24",
+						"ltv": 8800
+					}
+				]
+			},
+			{
+				"base": "USDC",
+				"symbol": "cUSDCv3",
+				"comet": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+				"underlying": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+				"feed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
+				"assets": [
+					{
+						"symbol": "COMP",
+						"underlying": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+						"feed": "0xdbd020CAeF83eFd542f4De03e3cF0C28A4428bd5",
+						"ltv": 5000
+					},
+					{
+						"symbol": "WBTC",
+						"underlying": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+						"feed": "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
+						"ltv": 8000
+					},
+					{
+						"symbol": "WETH",
+						"underlying": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+						"feed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+						"ltv": 8250
+					},
+					{
+						"symbol": "UNI",
+						"underlying": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+						"feed": "0x553303d460EE0afB37EdFf9bE42922D8FF63220e",
+						"ltv": 6800
+					},
+					{
+						"symbol": "LINK",
+						"underlying": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+						"feed": "0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c",
+						"ltv": 7300
+					},
+					{
+						"symbol": "wstETH",
+						"underlying": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+						"feed": "0x023ee795361B28cDbB94e302983578486A0A5f1B",
+						"ltv": 8200
+					},
+					{
+						"symbol": "cbBTC",
+						"underlying": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+						"feed": "0x0A4F4F9E84Fc4F674F0D209f94d41FaFE5aF887D",
+						"ltv": 8000
+					},
+					{
+						"symbol": "tBTC",
+						"underlying": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
+						"feed": "0xAA9527bf3183A96fe6e55831c96dE5cd988d3484",
+						"ltv": 7600
+					}
+				]
+			},
+			{
+				"base": "USDS",
+				"symbol": "cUSDSv3",
+				"comet": "0x5D409e56D886231aDAf00c8775665AD0f9897b56",
+				"underlying": "0xdC035D45d973E3EC169d2276DDab16f1e407384F",
+				"feed": "0xfF30586cD0F29eD462364C7e81375FC0C71219b1",
+				"assets": [
+					{
+						"symbol": "WETH",
+						"underlying": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+						"feed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+						"ltv": 8300
+					},
+					{
+						"symbol": "USDe",
+						"underlying": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
+						"feed": "0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961",
+						"ltv": 7000
+					},
+					{
+						"symbol": "cbBTC",
+						"underlying": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+						"feed": "0x2665701293fCbEB223D11A08D826563EDcCE423A",
+						"ltv": 8000
+					},
+					{
+						"symbol": "tBTC",
+						"underlying": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
+						"feed": "0x8350b7De6a6a2C1368E7D4Bd968190e13E354297",
+						"ltv": 7600
+					},
+					{
+						"symbol": "wstETH",
+						"underlying": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+						"feed": "0x7dE363b6Bf0a892B94a1Cd0C9DF76826bFC14228",
+						"ltv": 8200
+					},
+					{
+						"symbol": "sUSDS",
+						"underlying": "0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD",
+						"feed": "0x31B844DBc7CDBAa27D22fD6d54986836D023bF3F",
+						"ltv": 8800
+					}
+				]
+			},
+			{
+				"base": "USDT",
+				"symbol": "cUSDTv3",
+				"comet": "0x3Afdc9BCA9213A35503b077a6072F3D0d5AB0840",
+				"underlying": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+				"feed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
+				"assets": [
+					{
+						"symbol": "COMP",
+						"underlying": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+						"feed": "0xdbd020CAeF83eFd542f4De03e3cF0C28A4428bd5",
+						"ltv": 5000
+					},
+					{
+						"symbol": "WETH",
+						"underlying": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+						"feed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+						"ltv": 8300
+					},
+					{
+						"symbol": "WBTC",
+						"underlying": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+						"feed": "0x4E64E54c9f0313852a230782B3ba4B3B0952B499",
+						"ltv": 8000
+					},
+					{
+						"symbol": "UNI",
+						"underlying": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+						"feed": "0x553303d460EE0afB37EdFf9bE42922D8FF63220e",
+						"ltv": 7500
+					},
+					{
+						"symbol": "LINK",
+						"underlying": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+						"feed": "0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c",
+						"ltv": 7900
+					},
+					{
+						"symbol": "wstETH",
+						"underlying": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+						"feed": "0x023ee795361B28cDbB94e302983578486A0A5f1B",
+						"ltv": 8000
+					},
+					{
+						"symbol": "cbBTC",
+						"underlying": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+						"feed": "0x2D09142Eae60Fd8BD454a276E95AeBdFFD05722d",
+						"ltv": 8000
+					},
+					{
+						"symbol": "tBTC",
+						"underlying": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
+						"feed": "0x7b03a016dBC36dB8e05C480192faDcdB0a06bC37",
+						"ltv": 7600
+					},
+					{
+						"symbol": "wUSDM",
+						"underlying": "0x57F5E098CaD7A3D1Eed53991D4d66C45C9AF7812",
+						"feed": "0xe3a409eD15CD53aFdEFdd191ad945cEC528A2496",
+						"ltv": 8800
+					},
+					{
+						"symbol": "sFRAX",
+						"underlying": "0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32",
+						"feed": "0x403F2083B6E220147f8a8832f0B284B4Ed5777d1",
+						"ltv": 8800
+					}
+				]
+			}
+		]
+	}
+}

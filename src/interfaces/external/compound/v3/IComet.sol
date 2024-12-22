@@ -5,32 +5,7 @@ import {Currency} from "src/types/Currency.sol";
 import {ICometExt} from "./ICometExt.sol";
 import {ICometPriceFeed} from "./ICometPriceFeed.sol";
 
-interface IComet {
-	struct TotalsCollateral {
-		uint128 totalSupplyAsset;
-		uint128 reserved;
-	}
-
-	struct UserCollateral {
-		uint128 balance;
-		uint128 reserved;
-	}
-
-	struct UserBasic {
-		int104 principal;
-		uint64 baseTrackingIndex;
-		uint64 baseTrackingAccrued;
-		uint16 assetsIn;
-		uint8 reserved;
-	}
-
-	struct LiquidatorPoints {
-		uint32 numAbsorbs;
-		uint64 numAbsorbed;
-		uint128 approxSpend;
-		uint32 reserved;
-	}
-
+interface IComet is ICometExt {
 	struct AssetInfo {
 		uint8 offset;
 		Currency asset;
@@ -41,8 +16,6 @@ interface IComet {
 		uint64 liquidationFactor;
 		uint128 supplyCap;
 	}
-
-	// events
 
 	event Supply(address indexed from, address indexed dst, uint256 amount);
 	event Transfer(address indexed from, address indexed to, uint256 amount);
@@ -198,13 +171,5 @@ interface IComet {
 
 	function initializeStorage() external;
 
-	function totalsCollateral(Currency asset) external view returns (TotalsCollateral memory);
-
-	function userBasic(address account) external view returns (UserBasic memory);
-
-	function userCollateral(address account, Currency asset) external view returns (UserCollateral memory);
-
 	function userNonce(address account) external view returns (uint256);
-
-	function liquidatorPoints(address absorber) external view returns (LiquidatorPoints memory);
 }
