@@ -110,6 +110,14 @@ contract Configured {
 		return config.getCometMarkets();
 	}
 
+	function getChainId() internal view virtual returns (uint256) {
+		return config.getChainId();
+	}
+
+	function getForkBlockNumber() internal view virtual returns (uint256) {
+		return config.getForkBlockNumber();
+	}
+
 	function rpcAlias() internal view virtual returns (string memory) {
 		return config.getRpcAlias();
 	}

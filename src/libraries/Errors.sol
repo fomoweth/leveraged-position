@@ -6,6 +6,7 @@ pragma solidity ^0.8.26;
 
 library Errors {
 	error Unauthorized();
+	error InvalidNewOwner();
 
 	error ZeroAddress();
 	error ZeroBytes32();
@@ -23,6 +24,7 @@ library Errors {
 	error ProxyCreationFailed();
 	error ContractCreationFailed();
 	error InitializationFailed();
+	error InvalidInitialization();
 
 	error AddressNotSet();
 
