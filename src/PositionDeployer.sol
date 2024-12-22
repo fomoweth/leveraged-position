@@ -31,10 +31,12 @@ contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable {
 	/// bytes32(uint256(keccak256("Positions")) - 1)
 	bytes32 private constant POSITIONS_SLOT = 0x66b3960cb22d3f03aa7e631a9037f2bf707761d360715760189e13b796b49a52;
 
+	uint256 public constant REVISION = 0x01;
+
 	IConfigurator internal configurator;
 
 	constructor() {
-		_disableInitializers();
+		disableInitializer();
 	}
 
 	function initialize(bytes calldata params) external initializer {
@@ -151,5 +153,9 @@ contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable {
 
 			salt := add(keccak256(ptr, 0x80), nonce)
 		}
+	}
+
+	function getRevision() internal pure virtual override returns (uint256) {
+		return REVISION;
 	}
 }
