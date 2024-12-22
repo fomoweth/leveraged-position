@@ -3,25 +3,34 @@ pragma solidity ^0.8.26;
 
 import {Errors} from "src/libraries/Errors.sol";
 import {Currency} from "src/types/Currency.sol";
+import {Configurator} from "src/Configurator.sol";
 import {LeveragedPosition} from "src/LeveragedPosition.sol";
 import {PositionDeployer} from "src/PositionDeployer.sol";
 
 import {BaseTest} from "test/shared/BaseTest.sol";
 
+// forge test --match-path test/PositionDeployer.t.sol --chain 1 -vv
+
 contract PositionDeployerTest is BaseTest {
+	Configurator internal configurator;
+
+	address internal deployerImpl;
 	PositionDeployer internal deployer;
 
-	address owner = address(this);
-	address lender = address(1);
+	address internal owner = address(this);
+	address internal lender = address(1);
 
-	bytes creationCode = type(LeveragedPosition).creationCode;
-	bytes constructorParams;
-	bytes parameters;
+	bytes internal creationCode = type(LeveragedPosition).creationCode;
+	bytes internal constructorParams;
+	bytes internal parameters;
 
 	function setUp() public virtual override {
 		super.setUp();
 
-		deployer = new PositionDeployer();
+		configurator = new Configurator(address(this));
+		configurator.setPositionDeployerImpl((deployerImpl = address(new PositionDeployer())));
+
+		deployer = PositionDeployer(configurator.getPositionDeployer());
 
 		constructorParams = abi.encode(lender, WETH, USDC);
 		parameters = abi.encode(creationCode, constructorParams);

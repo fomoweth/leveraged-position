@@ -17,7 +17,6 @@ abstract contract Lender is ILender, Chain, Initializable {
 	using BytesLib for bytes;
 	using Errors for address;
 	using Errors for bytes32;
-	using TypeConversion for *;
 
 	address internal immutable POOL;
 
@@ -49,9 +48,13 @@ abstract contract Lender is ILender, Chain, Initializable {
 		}
 	}
 
-	function encodeCallResult(int104 delta, uint104 reserveIndex, uint40 accrualTime) internal pure returns (int256 r) {
+	function encodeCallResult(
+		int104 delta,
+		uint104 reserveIndex,
+		uint40 accrualTime
+	) internal pure returns (int256 encoded) {
 		assembly ("memory-safe") {
-			r := or(
+			encoded := or(
 				add(shl(208, and(MASK_40_BITS, accrualTime)), shl(104, and(MASK_104_BITS, reserveIndex))),
 				and(MASK_104_BITS, delta)
 			)
