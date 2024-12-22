@@ -2,15 +2,6 @@
 pragma solidity ^0.8.26;
 
 interface IConfigurator {
-	// event AddressSet(bytes32 indexed id, address indexed oldAddress, address indexed newAddress);
-
-	// event AddressSetAsProxy(
-	// 	bytes32 indexed id,
-	// 	address indexed proxy,
-	// 	address oldImplementation,
-	// 	address indexed newImplementation
-	// );
-
 	event AddressSet(bytes32 indexed id, address indexed newAddress);
 
 	event AddressSetAsProxy(bytes32 indexed id, address indexed proxy, address indexed newImplementation);
