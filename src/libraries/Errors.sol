@@ -22,6 +22,7 @@ library Errors {
 
 	error ProxyCreationFailed();
 	error ContractCreationFailed();
+	error InitializationFailed();
 
 	error AddressNotSet();
 
@@ -35,6 +36,8 @@ library Errors {
 	error InvalidCurrency();
 	error InvalidCollateralAsset();
 	error InvalidLiabilityAsset();
+	error InvalidLtvUpperBound();
+	error InvalidLtvLowerBound();
 	error ExceededMaxLimit();
 	error InsufficientPrincipalAmount();
 	error InsufficientCollateral();
