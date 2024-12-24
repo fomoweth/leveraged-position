@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
+import {ILeveragedPosition} from "src/interfaces/ILeveragedPosition.sol";
 import {ILender} from "src/interfaces/ILender.sol";
 import {MASK_160_BITS, MASK_128_BITS, MASK_104_BITS, MASK_80_BITS, MASK_40_BITS, MASK_16_BITS, MASK_8_BITS} from "src/libraries/BitMasks.sol";
 import {Errors} from "src/libraries/Errors.sol";
@@ -17,7 +18,8 @@ import {Dispatcher} from "src/base/Dispatcher.sol";
 
 /// @title LeveragedPosition
 
-contract LeveragedPosition is Authority, Dispatcher {
+contract LeveragedPosition is ILeveragedPosition, Authority, Dispatcher {
+	using Errors for bytes4;
 	using Math for uint256;
 	using Path for bytes;
 	using PercentageMath for uint256;
@@ -51,6 +53,8 @@ contract LeveragedPosition is Authority, Dispatcher {
 	uint8 internal constant COLLATERAL_SIDE = 1;
 	uint8 internal constant LIABILITY_SIDE = 2;
 
+	uint256 public constant REVISION = 0x01;
+
 	address public immutable owner;
 	address public immutable lender;
 	Currency public immutable collateralAsset;
@@ -68,15 +72,58 @@ contract LeveragedPosition is Authority, Dispatcher {
 		liabilityScale = uint64(10 ** _liabilityAsset.decimals());
 	}
 
-	function setLtvBounds(uint256 upperBound, uint256 lowerBound) external authorized {}
+	function setLtvBounds(uint256 upperBound, uint256 lowerBound) external authorized {
+		Errors.InvalidUpperBound.selector.required(upperBound < PercentageMath.BPS);
+		Errors.InvalidLowerBound.selector.required(lowerBound < upperBound || (lowerBound == 0 && upperBound == 0));
 
-	function uniswapV3SwapCallback(int256 amount0Delta, int256 amount1Delta, bytes calldata path) external {}
+		uint256 medianBound = upperBound.average(lowerBound);
 
-	function increaseLiquidity(bytes calldata params) external payable authorized {}
+		assembly ("memory-safe") {
+			sstore(
+				LTV_BOUNDS_SLOT,
+				or(
+					add(shl(32, and(MASK_16_BITS, medianBound)), shl(16, and(MASK_16_BITS, lowerBound))),
+					and(MASK_16_BITS, upperBound)
+				)
+			)
+		}
 
-	function decreaseLiquidity(bytes calldata params) external payable authorized {}
+		emit LtvBoundsSet(upperBound, lowerBound, medianBound);
+	}
 
-	function claimRewards(address recipient) external payable authorized {}
+	function uniswapV3SwapCallback(int256 amount0Delta, int256 amount1Delta, bytes calldata path) external {
+		//
+	}
+
+	function modifyLiquidity(ModifyLiquidityParams calldata params) external payable authorized {
+		//
+	}
+
+	function increaseLiquidity(IncreaseLiquidityParams calldata params) external payable authorized {}
+
+	function decreaseLiquidity(DecreaseLiquidityParams calldata params) external payable authorized {}
+
+	function addCollateral(uint256 amount) external payable authorized {
+		collateralAsset.transferFrom(msg.sender, address(this), amount);
+
+		updatePrincipal(amount.toInt256());
+
+		supplyInternal(amount);
+
+		setCheckpoint(collateralAsset);
+	}
+
+	function repayDebt(uint256 amount) external payable authorized {
+		liabilityAsset.transferFrom(msg.sender, address(this), amount);
+
+		repayInternal(amount);
+
+		setCheckpoint(liabilityAsset);
+	}
+
+	function claimRewards(address recipient) external payable authorized {
+		claimInternal(recipient);
+	}
 
 	function sweep(Currency currency) external payable authorized {
 		uint256 balance = currency.balanceOfSelf();
@@ -106,7 +153,22 @@ contract LeveragedPosition is Authority, Dispatcher {
 	}
 
 	function claimInternal(address recipient) internal virtual {
-		dispatch(lender, abi.encodeCall(ILender.claim, (recipient)));
+		dispatch(lender, abi.encodeCall(ILender.claim, (recipient == address(0) ? msg.sender : recipient)));
+	}
+
+	function setCheckpoint(Currency currency) internal virtual returns (uint256 state) {
+		bytes32 derivedSlot = CHECKPOINTS_SLOT.deriveMapping(currency.toId());
+
+		// get the length of the checkpoint array then assign it to the last index
+		uint256 index = derivedSlot.sload().asUint256();
+
+		// increment the length by 1
+		derivedSlot.sstore((index.add(1)).asBytes32());
+
+		// store new element at the last index of the array
+		derivedSlot.deriveArray().offset(index).sstore((state = getRatio(currency)).asBytes32());
+
+		emit CheckpointSet(currency, index, state);
 	}
 
 	function updateLiquidity(Currency currency, int256 delta, uint8 side) internal virtual {
@@ -124,6 +186,73 @@ contract LeveragedPosition is Authority, Dispatcher {
 				)
 			)
 		}
+
+		emit LiquidityUpdated(currency, delta, side);
+	}
+
+	function updatePrincipal(Currency currency, int256 delta) internal virtual {
+		bytes32 derivedSlot = PRINCIPALS_SLOT.deriveMapping(currency.toId());
+
+		assembly ("memory-safe") {
+			sstore(derivedSlot, add(sload(derivedSlot), delta))
+		}
+
+		emit PrincipalUpdated(currency, delta);
+	}
+
+	function updatePrincipal(int256 delta) internal virtual {
+		assembly ("memory-safe") {
+			sstore(PRINCIPALS_SLOT, add(sload(PRINCIPALS_SLOT), delta))
+		}
+
+		emit PrincipalUpdated(collateralAsset, delta);
+	}
+
+	function checkpointsLengthOf(Currency currency) public view returns (uint256) {
+		return CHECKPOINTS_SLOT.deriveMapping(currency.toId()).sload().asUint256();
+	}
+
+	function checkpointOf(
+		Currency currency,
+		uint256 index
+	) public view returns (uint128 ratio, uint80 roundId, uint40 updatedAt) {
+		bytes32 state = CHECKPOINTS_SLOT.deriveMapping(currency.toId()).deriveArray().offset(index).sload();
+
+		assembly ("memory-safe") {
+			ratio := and(MASK_128_BITS, state)
+			roundId := and(MASK_80_BITS, shr(128, state))
+			updatedAt := and(MASK_40_BITS, shr(208, state))
+		}
+	}
+
+	function liquidityOf(
+		Currency currency
+	) public view returns (int104 liquidity, uint104 reserveIndex, uint40 accrualTime, uint8 side) {
+		bytes32 state = LIQUIDITY_SLOT.deriveMapping(currency.toId()).sload();
+
+		assembly ("memory-safe") {
+			liquidity := signextend(12, state)
+			reserveIndex := and(MASK_104_BITS, shr(104, state))
+			accrualTime := and(MASK_40_BITS, shr(208, state))
+			side := and(MASK_8_BITS, shr(248, state))
+		}
+	}
+
+	function ltvBounds() public view returns (uint16 upperBound, uint16 lowerBound, uint16 medianBound) {
+		assembly ("memory-safe") {
+			let bounds := sload(LTV_BOUNDS_SLOT)
+			upperBound := and(MASK_16_BITS, bounds)
+			lowerBound := and(MASK_16_BITS, shr(16, bounds))
+			medianBound := and(MASK_16_BITS, shr(32, bounds))
+		}
+	}
+
+	function principal() public view returns (int256) {
+		return PRINCIPALS_SLOT.sload().asInt256();
+	}
+
+	function principalOf(Currency currency) public view returns (int256) {
+		return PRINCIPALS_SLOT.deriveMapping(currency.toId()).sload().asInt256();
 	}
 
 	function getPositionCollateral() internal view virtual returns (uint256) {
@@ -166,6 +295,16 @@ contract LeveragedPosition is Authority, Dispatcher {
 
 	function isValidAction(bytes32 action) internal view virtual returns (bool) {
 		return action == INCREASE_LIQUIDITY_ACTION || action == DECREASE_LIQUIDITY_ACTION;
+	}
+
+	function convertToBase(uint256 amount, uint256 price, uint256 scale) internal pure returns (uint256) {
+		if (amount == 0) return 0;
+		return amount.mulDiv(price, scale);
+	}
+
+	function convertFromBase(uint256 amount, uint256 price, uint256 scale) internal pure returns (uint256) {
+		if (amount == 0) return 0;
+		return amount.mulDiv(scale, price);
 	}
 
 	function cache(bytes32 key) internal pure virtual returns (bytes32) {

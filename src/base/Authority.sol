@@ -7,11 +7,9 @@ import {Errors} from "src/libraries/Errors.sol";
 /// @notice Authorizes msg.sender of calls made to this contract
 
 abstract contract Authority {
-	address private immutable self;
+	using Errors for bytes4;
 
-	constructor() {
-		self = address(this);
-	}
+	address internal immutable self = address(this);
 
 	modifier checkDelegateCall() {
 		_checkDelegateCall();
@@ -29,15 +27,15 @@ abstract contract Authority {
 	}
 
 	function _checkDelegateCall() private view {
-		Errors.required(self != address(this), Errors.NotDelegateCall.selector);
+		Errors.NotDelegateCall.selector.required(self != address(this));
 	}
 
 	function _checkNotDelegateCall() private view {
-		Errors.required(self == address(this), Errors.NoDelegateCall.selector);
+		Errors.NoDelegateCall.selector.required(self == address(this));
 	}
 
 	function _checkAuthority() private view {
-		Errors.required(isAuthorized(msg.sender), Errors.Unauthorized.selector);
+		Errors.Unauthorized.selector.required(isAuthorized(msg.sender));
 	}
 
 	function isAuthorized(address account) internal view virtual returns (bool);

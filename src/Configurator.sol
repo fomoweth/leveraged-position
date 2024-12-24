@@ -13,6 +13,7 @@ import {Ownable} from "src/base/Ownable.sol";
 /// and https://github.com/Vectorized/solady/blob/main/src/utils/ERC1967Factory.sol
 
 contract Configurator is IConfigurator, Ownable {
+	using Errors for bytes4;
 	using StorageSlot for bytes32;
 	using TypeConversion for address;
 	using TypeConversion for bytes32;
@@ -38,28 +39,27 @@ contract Configurator is IConfigurator, Ownable {
 	}
 
 	function getAddress(bytes32 id) public view returns (address value) {
-		Errors.required(
-			(value = ADDRESSES_SLOT.derive(id).sload().asAddress()) != address(0),
-			Errors.AddressNotSet.selector
+		Errors.AddressNotSet.selector.required(
+			(value = ADDRESSES_SLOT.deriveMapping(id).sload().asAddress()) != address(0)
 		);
 	}
 
 	function setAddress(bytes32 id, address newAddress) public onlyOwner {
-		ADDRESSES_SLOT.derive(id).sstore(newAddress.asBytes32());
+		ADDRESSES_SLOT.deriveMapping(id).sstore(newAddress.asBytes32());
 
 		emit AddressSet(id, newAddress);
 	}
 
 	function setAddressAsProxy(bytes32 id, address newImplementation) public onlyOwner {
-		address proxy = ADDRESSES_SLOT.derive(id).sload().asAddress();
+		address proxy = ADDRESSES_SLOT.deriveMapping(id).sload().asAddress();
 
 		if (proxy == address(0)) {
-			ADDRESSES_SLOT.derive(id).sstore((proxy = _deployAndCall(newImplementation)).asBytes32());
+			ADDRESSES_SLOT.deriveMapping(id).sstore((proxy = _deployAndCall(newImplementation)).asBytes32());
 		} else {
 			_upgradeAndCall(proxy, newImplementation);
 		}
 
-		IMPLEMENTATION_SLOT.derive(id).sstore(newImplementation.asBytes32());
+		IMPLEMENTATION_SLOT.deriveMapping(id).sstore(newImplementation.asBytes32());
 
 		emit AddressSetAsProxy(id, proxy, newImplementation);
 	}
@@ -159,5 +159,9 @@ contract Configurator is IConfigurator, Ownable {
 				mstore(ptr, 0x607f3d8160093d39f33d3d3373)
 			}
 		}
+	}
+
+	function _initializeOwnerGuard() internal pure virtual override returns (bool) {
+		return true;
 	}
 }

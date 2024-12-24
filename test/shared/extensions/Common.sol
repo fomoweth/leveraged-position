@@ -1,46 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-import {CommonBase} from "forge-std/Base.sol";
+import {Vm} from "lib/forge-std/src/Vm.sol";
 
 import {CurrencyNamer} from "src/libraries/CurrencyNamer.sol";
 import {Currency} from "src/types/Currency.sol";
 
 import {Constants} from "./Constants.sol";
 
-abstract contract Common is CommonBase, Constants {
+abstract contract Common is Constants {
 	using CurrencyNamer for Currency;
 
-	uint256 internal snapshotId = MAX_UINT256;
-
-	modifier impersonate(address account) {
-		vm.startPrank(account);
-		_;
-		vm.stopPrank();
-	}
-
-	function revertToState() internal virtual {
-		if (snapshotId != MAX_UINT256) vm.revertToState(snapshotId);
-		snapshotId = vm.snapshotState();
-	}
-
-	function revertToStateAndDelete() internal virtual {
-		if (snapshotId != MAX_UINT256) vm.revertToStateAndDelete(snapshotId);
-		snapshotId = vm.snapshotState();
-	}
-
-	function setApprovals(
-		Currency[] memory currencies,
-		address account,
-		address spender
-	) internal virtual impersonate(account) {
-		for (uint256 i; i < currencies.length; ++i) {
-			currencies[i].approve(spender, MAX_UINT256);
-		}
-	}
+	Vm private constant vm = Vm(VM);
 
 	function labelCurrency(Currency currency) internal virtual {
-		label(Currency.unwrap(currency), currency.symbol());
+		label(currency.toAddress(), currency.symbol());
 	}
 
 	function label(address target, string memory name) internal virtual {
@@ -55,18 +29,23 @@ abstract contract Common is CommonBase, Constants {
 		}
 	}
 
-	function bytes32ToAddress(bytes32 input) internal pure returns (address output) {
-		return address(uint160(uint256(input)));
-	}
-
-	function addressToBytes32(address input) internal pure returns (bytes32 output) {
-		return bytes32(bytes20(input));
-	}
-
-	function emptyData() internal pure returns (bytes calldata data) {
+	function randomBytes(uint256 seed) internal pure returns (bytes memory result) {
 		assembly ("memory-safe") {
-			data.length := 0
+			mstore(0x00, seed)
+			let r := keccak256(0x00, 0x20)
+
+			if lt(byte(2, r), 0x20) {
+				result := mload(0x40)
+				let n := and(r, 0x7f)
+				mstore(result, n)
+				codecopy(add(result, 0x20), byte(1, r), add(n, 0x40))
+				mstore(0x40, add(add(result, 0x40), n))
+			}
 		}
+	}
+
+	function encodeSlot(bytes32 slot, bytes32 key) internal pure returns (bytes32) {
+		return keccak256(abi.encode(key, slot));
 	}
 
 	function getCurrencies(Currency currency0, Currency currency1) public pure returns (Currency[] memory currencies) {

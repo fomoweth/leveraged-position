@@ -13,6 +13,7 @@ import {Lender} from "./Lender.sol";
 /// @notice Lending adapter to invoke actions of Comet
 
 contract CompoundV3Lender is Lender {
+	using Errors for bytes4;
 	using Math for uint256;
 	using PercentageMath for uint256;
 	using SafeCast for *;
@@ -306,7 +307,7 @@ contract CompoundV3Lender is Lender {
 
 	function getRatio(Currency currency) external view returns (uint256 ratio) {
 		address priceFeed = getPriceFeed(currency);
-		Errors.required(priceFeed != address(0), Errors.InvalidFeed.selector);
+		Errors.InvalidFeed.selector.required(priceFeed != address(0));
 
 		assembly ("memory-safe") {
 			let ptr := mload(0x40)
@@ -477,7 +478,7 @@ contract CompoundV3Lender is Lender {
 	}
 
 	function getPrice(address comet, address priceFeed) internal view returns (uint256 price) {
-		Errors.required(priceFeed != address(0), Errors.InvalidFeed.selector);
+		Errors.InvalidFeed.selector.required(priceFeed != address(0));
 
 		assembly ("memory-safe") {
 			let ptr := mload(0x40)
@@ -493,7 +494,7 @@ contract CompoundV3Lender is Lender {
 			price := mload(0x00)
 		}
 
-		Errors.required(price != 0, Errors.InvalidPrice.selector);
+		Errors.InvalidPrice.selector.required(price != 0);
 	}
 
 	function totalsBasic(

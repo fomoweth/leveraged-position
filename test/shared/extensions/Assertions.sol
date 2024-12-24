@@ -7,11 +7,11 @@ import {Currency} from "src/types/Currency.sol";
 
 abstract contract Assertions is StdAssertions {
 	function assertEq(Currency a, Currency b) internal pure virtual {
-		assertEq(Currency.unwrap(a), Currency.unwrap(b));
+		assertEq(a.toAddress(), b.toAddress());
 	}
 
 	function assertEq(Currency a, Currency b, string memory err) internal pure virtual {
-		assertEq(Currency.unwrap(a), Currency.unwrap(b), err);
+		assertEq(a.toAddress(), b.toAddress(), err);
 	}
 
 	function assertCloseTo(uint256 a, uint256 b, uint16 percentDelta) internal pure virtual {

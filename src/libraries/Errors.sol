@@ -38,8 +38,8 @@ library Errors {
 	error InvalidCurrency();
 	error InvalidCollateralAsset();
 	error InvalidLiabilityAsset();
-	error InvalidLtvUpperBound();
-	error InvalidLtvLowerBound();
+	error InvalidUpperBound();
+	error InvalidLowerBound();
 	error ExceededMaxLimit();
 	error InsufficientPrincipalAmount();
 	error InsufficientCollateral();
@@ -53,7 +53,7 @@ library Errors {
 	error InvalidFeed();
 	error InvalidPrice();
 
-	function required(bool condition, bytes4 selector) internal pure {
+	function required(bytes4 selector, bool condition) internal pure {
 		assembly ("memory-safe") {
 			if iszero(condition) {
 				mstore(0x00, selector)

@@ -12,10 +12,15 @@ import {Config} from "./Config.sol";
 contract Configured {
 	Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
 
-	uint256 internal constant ETHEREUM_CHAIN_ID = 1;
-	uint256 internal constant OPTIMISM_CHAIN_ID = 10;
-	uint256 internal constant POLYGON_CHAIN_ID = 137;
-	uint256 internal constant ARBITRUM_CHAIN_ID = 42161;
+	uint256 private constant ETHEREUM_CHAIN_ID = 1;
+	uint256 private constant OPTIMISM_CHAIN_ID = 10;
+	uint256 private constant POLYGON_CHAIN_ID = 137;
+	uint256 private constant ARBITRUM_CHAIN_ID = 42161;
+
+	string internal constant ETHEREUM_NETWORK = "ethereum";
+	string internal constant OPTIMISM_NETWORK = "optimism";
+	string internal constant POLYGON_NETWORK = "polygon";
+	string internal constant ARBITRUM_NETWORK = "arbitrum";
 
 	Config internal config;
 
@@ -38,8 +43,6 @@ contract Configured {
 	Currency internal UNI;
 
 	Currency[] internal allAssets;
-	Currency[] internal collateralAssets;
-	Currency[] internal liabilityAssets;
 	Currency[] internal intermediateCurrencies;
 	Currency[] internal stablecoins;
 
@@ -52,13 +55,13 @@ contract Configured {
 		if (chainId == 0) {
 			revert("chain id must be specified (`--chain <chainid>`)");
 		} else if (chainId == ETHEREUM_CHAIN_ID) {
-			network = "ethereum";
+			network = ETHEREUM_NETWORK;
 		} else if (chainId == OPTIMISM_CHAIN_ID) {
-			network = "optimism";
+			network = OPTIMISM_NETWORK;
 		} else if (chainId == POLYGON_CHAIN_ID) {
-			network = "polygon";
+			network = POLYGON_NETWORK;
 		} else if (chainId == ARBITRUM_CHAIN_ID) {
-			network = "arbitrum";
+			network = ARBITRUM_NETWORK;
 		} else {
 			revert(string.concat("Unsupported chain: ", vm.toString(chainId)));
 		}
@@ -120,31 +123,5 @@ contract Configured {
 
 	function rpcAlias() internal view virtual returns (string memory) {
 		return config.getRpcAlias();
-	}
-
-	function randomReserves() internal virtual returns (Currency collateralAsset, Currency liabilityAsset) {
-		collateralAsset = randomCollateral();
-		while (true) if ((liabilityAsset = randomLiability()) != collateralAsset) break;
-	}
-
-	function randomAsset() internal virtual returns (Currency) {
-		return randomAsset(allAssets);
-	}
-
-	function randomCollateral() internal virtual returns (Currency) {
-		return randomAsset(collateralAssets);
-	}
-
-	function randomLiability() internal virtual returns (Currency) {
-		return randomAsset(liabilityAssets);
-	}
-
-	function randomStablecoin() internal virtual returns (Currency) {
-		return randomAsset(stablecoins);
-	}
-
-	function randomAsset(Currency[] memory assets) internal virtual returns (Currency) {
-		vm.assume(assets.length != 0);
-		return assets[vm.randomUint(0, assets.length - 1)];
 	}
 }

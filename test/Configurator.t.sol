@@ -1,26 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-import {console2 as console} from "forge-std/Test.sol";
-
 import {Errors} from "src/libraries/Errors.sol";
 import {Currency} from "src/types/Currency.sol";
 import {AaveV3Lender} from "src/modules/AaveV3Lender.sol";
 import {Configurator} from "src/Configurator.sol";
 import {PositionDeployer} from "src/PositionDeployer.sol";
 
+import {Bytes32Cast} from "test/shared/utils/Bytes32Cast.sol";
 import {BaseTest} from "test/shared/BaseTest.sol";
 
 // forge test --match-path test/Configurator.t.sol --chain 1 -vv
 
 contract ConfiguratorTest is BaseTest {
+	using Bytes32Cast for bytes32;
+
 	event AddressSet(bytes32 indexed id, address indexed newAddress);
 
 	event AddressSetAsProxy(bytes32 indexed id, address indexed proxy, address indexed newImplementation);
 
 	bytes32 internal constant ADDRESSES_SLOT = 0x67c14ec595f48137cacef9bcaa1219f029491ada758d8ab6d68d9a5281ed279c;
-
-	bytes32 internal constant IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
 
 	bytes32 internal constant LAST_REVISION_SLOT = 0x2dcf4d2fa80344eb3d0178ea773deb29f1742cf017431f9ee326c624f742669b;
 
@@ -58,7 +57,6 @@ contract ConfiguratorTest is BaseTest {
 
 	function configure() internal virtual override {
 		super.configure();
-
 		configureAaveV3("aave");
 	}
 
@@ -177,7 +175,7 @@ contract ConfiguratorTest is BaseTest {
 	}
 
 	function getAddress(bytes32 slot, bytes32 id) internal view returns (address) {
-		return bytes32ToAddress(vm.load(address(configurator), keccak256(abi.encode(id, slot))));
+		return vm.load(address(configurator), encodeSlot(slot, id)).castToAddress();
 	}
 
 	function getAddress(bytes32 id) internal view returns (address) {
@@ -185,10 +183,10 @@ contract ConfiguratorTest is BaseTest {
 	}
 
 	function getImplementation(bytes32 id) internal view returns (address) {
-		return getAddress(IMPLEMENTATION_SLOT, id);
+		return getAddress(ERC1967_IMPLEMENTATION_SLOT, id);
 	}
 
 	function getRevision(address target) internal view returns (uint64) {
-		return uint64(uint256(vm.load(target, LAST_REVISION_SLOT)));
+		return vm.load(target, LAST_REVISION_SLOT).castToUint64();
 	}
 }

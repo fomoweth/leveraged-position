@@ -17,6 +17,7 @@ import {Initializable} from "src/base/Initializable.sol";
 
 contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable {
 	using BytesLib for bytes;
+	using Errors for bytes4;
 	using StorageSlot for bytes32;
 	using TypeConversion for address;
 	using TypeConversion for bytes32;
@@ -47,8 +48,8 @@ contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable {
 		bytes calldata creationCode = params.toBytes(0);
 		bytes calldata constructorParams = params.toBytes(1);
 
-		Errors.required(creationCode.length != 0, Errors.EmptyCreationCode.selector);
-		Errors.required(constructorParams.length != 0, Errors.EmptyConstructor.selector);
+		Errors.EmptyCreationCode.selector.required(creationCode.length != 0);
+		Errors.EmptyConstructor.selector.required(constructorParams.length != 0);
 
 		// append the owner's address to the beginning of the constructor parameters, then compute the salt
 		bytes memory bytecode = abi.encodePacked(msg.sender.asBytes32(), constructorParams);
@@ -96,7 +97,7 @@ contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable {
 			log4(0x00, 0x00, DEPLOYED_TOPIC, position, caller(), salt)
 		}
 
-		POSITIONS_SLOT.derive(salt).sstore(position.asBytes32());
+		POSITIONS_SLOT.deriveMapping(salt).sstore(position.asBytes32());
 	}
 
 	function getPosition(
@@ -110,7 +111,7 @@ contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable {
 	}
 
 	function getPosition(bytes32 salt) public view returns (address position) {
-		return POSITIONS_SLOT.derive(salt).sload().asAddress();
+		return POSITIONS_SLOT.deriveMapping(salt).sload().asAddress();
 	}
 
 	function isContract(address target) internal view returns (bool flag) {

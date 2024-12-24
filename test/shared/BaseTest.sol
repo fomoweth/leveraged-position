@@ -8,21 +8,79 @@ import {ISTETH} from "src/interfaces/external/token/ISTETH.sol";
 import {Currency} from "src/types/Currency.sol";
 
 import {Assertions} from "./extensions/Assertions.sol";
+import {Common} from "./extensions/Common.sol";
 import {Fork} from "./extensions/Fork.sol";
+import {ProxyHelper} from "./extensions/ProxyHelper.sol";
 
-abstract contract BaseTest is Test, Assertions, Fork {
+abstract contract BaseTest is Test, Assertions, Common, Fork, ProxyHelper {
 	using stdStorage for StdStorage;
 
-	bytes32 internal constant STETH_TOTAL_SHARES_SLOT =
-		0xe3b4b636e601189b5f4c6742edf2538ac12bb61ed03e6da26949d69838fa447e;
+	uint256 internal snapshotId = MAX_UINT256;
+
+	modifier impersonate(address account) {
+		vm.startPrank(account);
+		_;
+		vm.stopPrank();
+	}
+
+	modifier onlyEthereum() {
+		vm.skip(block.chainid != ETHEREUM_CHAIN_ID);
+		_;
+	}
+
+	modifier onlyOptimism() {
+		vm.skip(block.chainid != OPTIMISM_CHAIN_ID);
+		_;
+	}
+
+	modifier onlyPolygon() {
+		vm.skip(block.chainid != POLYGON_CHAIN_ID);
+		_;
+	}
+
+	modifier onlyArbitrum() {
+		vm.skip(block.chainid != ARBITRUM_CHAIN_ID);
+		_;
+	}
 
 	function setUp() public virtual {
 		configure();
 		labelAll();
 	}
 
+	function configure() internal virtual override {
+		if (block.chainid == 31337) vm.chainId(ETHEREUM_CHAIN_ID);
+
+		super.configure();
+		fork();
+	}
+
+	function revertToState() internal virtual {
+		if (snapshotId != MAX_UINT256) vm.revertToState(snapshotId);
+		snapshotId = vm.snapshotState();
+	}
+
+	function revertToStateAndDelete() internal virtual {
+		if (snapshotId != MAX_UINT256) vm.revertToStateAndDelete(snapshotId);
+		snapshotId = vm.snapshotState();
+	}
+
 	function makeAccount(string memory name) internal virtual override returns (Account memory account) {
 		deal((account = super.makeAccount(name)).addr, 100 ether);
+	}
+
+	function setApproval(Currency currency, address account, address spender) internal virtual impersonate(account) {
+		currency.approve(spender, MAX_UINT256);
+	}
+
+	function setApprovals(
+		Currency[] memory currencies,
+		address account,
+		address spender
+	) internal virtual impersonate(account) {
+		for (uint256 i; i < currencies.length; ++i) {
+			currencies[i].approve(spender, MAX_UINT256);
+		}
 	}
 
 	function deal(Currency currency, address account, uint256 amount) internal virtual {

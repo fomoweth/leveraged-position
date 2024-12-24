@@ -100,6 +100,30 @@ library Bytes32Cast {
 		}
 	}
 
+	function castToUint64(bytes32 input) internal pure returns (uint64 output) {
+		assembly ("memory-safe") {
+			output := input
+		}
+	}
+
+	function castToUint64Array(bytes32[] memory input) internal pure returns (uint64[] memory output) {
+		assembly ("memory-safe") {
+			output := input
+		}
+	}
+
+	function castToBytes32(uint64 input) internal pure returns (bytes32 output) {
+		assembly ("memory-safe") {
+			output := input
+		}
+	}
+
+	function castToBytes32Array(uint64[] memory input) internal pure returns (bytes32[] memory output) {
+		assembly ("memory-safe") {
+			output := input
+		}
+	}
+
 	function castToUint128(bytes32 input) internal pure returns (uint128 output) {
 		assembly ("memory-safe") {
 			output := input

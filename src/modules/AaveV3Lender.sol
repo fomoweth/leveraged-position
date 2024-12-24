@@ -16,6 +16,7 @@ import {Lender} from "./Lender.sol";
 
 contract AaveV3Lender is Lender {
 	using AaveReserves for uint256;
+	using Errors for bytes4;
 	using Math for uint256;
 	using PercentageMath for uint256;
 	using SafeCast for uint256;
@@ -345,7 +346,7 @@ contract AaveV3Lender is Lender {
 		uint256 answer = getAssetPrice(PRICE_ORACLE, currency);
 
 		address aggregator = getChainLinkAggregator(getSourceOfAsset(PRICE_ORACLE, currency));
-		Errors.required(aggregator != address(0), Errors.InvalidFeed.selector);
+		Errors.InvalidFeed.selector.required(aggregator != address(0));
 
 		assembly ("memory-safe") {
 			let ptr := mload(0x40)
@@ -484,26 +485,6 @@ contract AaveV3Lender is Lender {
 			mstore(0x40, add(returndata, add(returndatasize(), 0x20)))
 			mstore(returndata, returndatasize())
 			returndatacopy(add(returndata, 0x20), 0x00, returndatasize())
-
-			// returndatacopy(ptr, 0x00, returndatasize())
-
-			// length := div(sub(returndatasize(), 0x40), 0x20)
-
-			// rewardAssets := mload(0x40)
-			// mstore(rewardAssets, length)
-
-			// pos := add(reserves, 0x20)
-			// offset := sub(add(ptr, 0x40), pos)
-			// guard := add(pos, shl(0x05, length))
-			// mstore(0x40, guard)
-
-			// // prettier-ignore
-			// for { } 0x01 { } {
-			// 	mstore(pos, mload(add(pos, offset)))
-			// 	pos := add(pos, 0x20)
-
-			// 	if eq(pos, guard) { break }
-			// }
 		}
 
 		return abi.decode(returndata, (Currency[], uint256[]));
@@ -799,7 +780,7 @@ contract AaveV3Lender is Lender {
 			price := mload(0x00)
 		}
 
-		Errors.required(price != 0, Errors.InvalidPrice.selector);
+		Errors.InvalidPrice.selector.required(price != 0);
 	}
 
 	function getSourceOfAsset(address oracle, Currency currency) internal view returns (address source) {

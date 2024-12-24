@@ -47,7 +47,7 @@ library StorageSlot {
 		}
 	}
 
-	function derive(bytes32 slot, bytes32 key) internal pure returns (bytes32 derivedSlot) {
+	function deriveMapping(bytes32 slot, bytes32 key) internal pure returns (bytes32 derivedSlot) {
 		assembly ("memory-safe") {
 			mstore(0x00, key)
 			mstore(0x20, slot)
@@ -55,7 +55,7 @@ library StorageSlot {
 		}
 	}
 
-	function derive(bytes32 slot) internal pure returns (bytes32 derivedSlot) {
+	function deriveArray(bytes32 slot) internal pure returns (bytes32 derivedSlot) {
 		assembly ("memory-safe") {
 			mstore(0x00, slot)
 			derivedSlot := keccak256(0x00, 0x20)
