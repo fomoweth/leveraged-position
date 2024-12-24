@@ -6,6 +6,7 @@ import {Currency} from "src/types/Currency.sol";
 import {AaveV3Lender} from "src/modules/AaveV3Lender.sol";
 import {Configurator} from "src/Configurator.sol";
 import {PositionDeployer} from "src/PositionDeployer.sol";
+import {PositionDescriptor} from "src/PositionDescriptor.sol";
 
 import {Bytes32Cast} from "test/shared/utils/Bytes32Cast.sol";
 import {BaseTest} from "test/shared/BaseTest.sol";
@@ -32,6 +33,9 @@ contract ConfiguratorTest is BaseTest {
 	address internal v2DeployerImpl;
 	address internal deployer;
 
+	address internal descriptorImpl;
+	address internal descriptor;
+
 	address internal v1Impl;
 	address internal v2Impl;
 	address internal adapter;
@@ -45,6 +49,8 @@ contract ConfiguratorTest is BaseTest {
 
 		v1DeployerImpl = address(new PositionDeployer());
 		v2DeployerImpl = address(new PositionDeployer());
+
+		descriptorImpl = address(new PositionDescriptor());
 
 		v1Impl = address(
 			new AaveV3Lender(aaveV3.id, address(aaveV3.pool), address(aaveV3.oracle), address(aaveV3.rewardsController))
@@ -160,6 +166,29 @@ contract ConfiguratorTest is BaseTest {
 		assertEq(configurator.getPositionDeployer(), deployer);
 		assertEq(getImplementation(POSITION_DEPLOYER), v2DeployerImpl);
 		assertEq(getRevision(deployer), 2);
+
+		vm.stopPrank();
+	}
+
+	function test_setPositionDescriptorImpl_revertsWithUnauthorized() public {
+		vm.expectRevert(Errors.Unauthorized.selector);
+		configurator.setPositionDescriptorImpl(descriptorImpl);
+	}
+
+	function test_setPositionDescriptorImpl() public {
+		assertEq(getAddress(POSITION_DESCRIPTOR), address(0));
+		assertEq(getImplementation(POSITION_DESCRIPTOR), address(0));
+
+		vm.expectRevert(Errors.AddressNotSet.selector);
+		configurator.getPositionDescriptor();
+
+		vm.startPrank(admin);
+
+		configurator.setPositionDescriptorImpl(descriptorImpl);
+
+		assertNotEq((descriptor = configurator.getPositionDescriptor()), address(0));
+		assertEq(getImplementation(POSITION_DESCRIPTOR), descriptorImpl);
+		assertEq(getRevision(descriptor), 1);
 
 		vm.stopPrank();
 	}

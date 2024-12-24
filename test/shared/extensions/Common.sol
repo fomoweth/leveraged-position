@@ -44,6 +44,10 @@ abstract contract Common is Constants {
 		}
 	}
 
+	function encodePrivateKey(string memory key) internal pure returns (uint256) {
+		return uint256(keccak256(abi.encodePacked(key)));
+	}
+
 	function encodeSlot(bytes32 slot, bytes32 key) internal pure returns (bytes32) {
 		return keccak256(abi.encode(key, slot));
 	}
