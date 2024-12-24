@@ -19,7 +19,6 @@ abstract contract Initializable {
 	uint64 private constant MAX_UINT64 = (1 << 64) - 1;
 
 	modifier initializer() {
-		// uint256 revision = getRevision();
 		uint64 revision;
 		bool isTopLevelCall;
 
@@ -42,24 +41,6 @@ abstract contract Initializable {
 			}
 
 			sstore(LAST_REVISION_SLOT, revision)
-
-			// if and(
-			// 	and(isTopLevelCall, iszero(iszero(extcodesize(address())))),
-			// 	iszero(gt(revision, sload(LAST_REVISION_SLOT)))
-			// ) {
-			// 	mstore(0x00, 0xf92ee8a9) // InvalidInitialization()
-			// 	revert(0x1c, 0x04)
-			// }
-
-			// if and(
-			// 	iszero(gt(revision, sload(LAST_REVISION_SLOT))),
-			// 	not(or(iszero(isTopLevelCall), iszero(extcodesize(address()))))
-			// ) {
-			// 	mstore(0x00, 0xf92ee8a9) // InvalidInitialization()
-			// 	revert(0x1c, 0x04)
-			// }
-
-			// sstore(LAST_REVISION_SLOT, and(MAX_UINT64, revision))
 		}
 
 		_;
