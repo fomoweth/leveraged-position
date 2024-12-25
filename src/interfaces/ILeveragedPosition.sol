@@ -6,14 +6,11 @@ import {Currency} from "src/types/Currency.sol";
 interface ILeveragedPosition {
 	event CheckpointSet(Currency indexed currency, uint256 indexed index, uint256 indexed state);
 
-	event CheckpointUpdated(Currency indexed currency, uint256 indexed index, uint256 indexed state);
-
 	event LiquidityUpdated(Currency indexed currency, int256 indexed delta, uint8 indexed side);
 
-	event PrincipalUpdated(Currency indexed currency, int256 indexed delta);
+	event PrincipalUpdated(int256 indexed principal, int256 indexed delta);
 
 	event LtvBoundsSet(uint256 indexed upperBound, uint256 indexed lowerBound, uint256 indexed medianBound);
-	event LtvBoundsUpdated(uint256 indexed upperBound, uint256 indexed lowerBound, uint256 indexed medianBound);
 
 	struct IncreaseLiquidityParams {
 		uint256 amountToDeposit;
@@ -30,13 +27,11 @@ interface ILeveragedPosition {
 
 	function decreaseLiquidity(DecreaseLiquidityParams calldata params) external payable;
 
-	struct ModifyLiquidityParams {
-		uint256 amountPrincipal;
-		bool shouldClaim;
-		bytes path;
-	}
+	function addCollateral(uint256 amount) external payable;
 
-	function modifyLiquidity(ModifyLiquidityParams calldata params) external payable;
+	function repayDebt(uint256 amount) external payable;
+
+	function claimRewards(address recipient) external payable;
 
 	function checkpointsLengthOf(Currency currency) external view returns (uint256);
 
@@ -51,13 +46,15 @@ interface ILeveragedPosition {
 
 	function ltvBounds() external view returns (uint16 upperBound, uint16 lowerBound, uint16 medianBound);
 
-	// function principalOf(Currency currency) external view returns (int256);
+	function principal() external view returns (int256);
 
-	// function principal() external view returns (int256);
+	function LENDER() external view returns (address);
 
-	function lender() external view returns (address);
+	function OWNER() external view returns (address);
 
-	function collateralAsset() external view returns (Currency);
+	function COLLATERAL_ASSET() external view returns (Currency);
 
-	function liabilityAsset() external view returns (Currency);
+	function LIABILITY_ASSET() external view returns (Currency);
+
+	function REVISION() external view returns (uint256);
 }

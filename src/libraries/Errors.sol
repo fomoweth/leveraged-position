@@ -2,7 +2,7 @@
 pragma solidity ^0.8.26;
 
 /// @title Errors
-/// @notice Provides assertions and custom errors used in multiple contracts
+/// @notice Collection of custom errors used in multiple contracts
 
 library Errors {
 	error Unauthorized();
@@ -34,6 +34,7 @@ library Errors {
 	error NoDelegateCall();
 	error NotDelegateCall();
 
+	error IdenticalAssets();
 	error InvalidAction();
 	error InvalidCurrency();
 	error InvalidCollateralAsset();
@@ -52,46 +53,4 @@ library Errors {
 
 	error InvalidFeed();
 	error InvalidPrice();
-
-	function required(bytes4 selector, bool condition) internal pure {
-		assembly ("memory-safe") {
-			if iszero(condition) {
-				mstore(0x00, selector)
-				revert(0x00, 0x04)
-			}
-		}
-	}
-
-	function verifyAddress(address target) internal pure returns (address) {
-		assembly ("memory-safe") {
-			if iszero(target) {
-				mstore(0x00, 0xd92e233d) // ZeroAddress()
-				revert(0x00, 0x04)
-			}
-		}
-
-		return target;
-	}
-
-	function verifyBytes32(bytes32 target) internal pure returns (bytes32) {
-		assembly ("memory-safe") {
-			if iszero(target) {
-				mstore(0x00, 0xdff66326) // ZeroBytes32()
-				revert(0x00, 0x04)
-			}
-		}
-
-		return target;
-	}
-
-	function verifyContract(address target) internal view returns (address) {
-		assembly ("memory-safe") {
-			if iszero(extcodesize(target)) {
-				mstore(0x00, 0x1858b10b) // EmptyCode()
-				revert(0x00, 0x04)
-			}
-		}
-
-		return target;
-	}
 }

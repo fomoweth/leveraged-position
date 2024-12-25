@@ -11,13 +11,13 @@ import {TypeConversion} from "src/libraries/TypeConversion.sol";
 import {Currency} from "src/types/Currency.sol";
 import {ContractLocker} from "src/base/ContractLocker.sol";
 import {Initializable} from "src/base/Initializable.sol";
+import {Validations} from "src/base/Validations.sol";
 
 /// @title PositionDeployer
 /// @notice Deploys the position contracts with the given parameters permissionlessly
 
-contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable {
+contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable, Validations {
 	using BytesLib for bytes;
-	using Errors for bytes4;
 	using StorageSlot for bytes32;
 	using TypeConversion for address;
 	using TypeConversion for bytes32;
@@ -48,8 +48,8 @@ contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable {
 		bytes calldata creationCode = params.toBytes(0);
 		bytes calldata constructorParams = params.toBytes(1);
 
-		Errors.EmptyCreationCode.selector.required(creationCode.length != 0);
-		Errors.EmptyConstructor.selector.required(constructorParams.length != 0);
+		required(creationCode.length != 0, Errors.EmptyCreationCode.selector);
+		required(constructorParams.length != 0, Errors.EmptyConstructor.selector);
 
 		// append the owner's address to the beginning of the constructor parameters, then compute the salt
 		bytes memory bytecode = abi.encodePacked(msg.sender.asBytes32(), constructorParams);

@@ -6,13 +6,14 @@ import {Errors} from "src/libraries/Errors.sol";
 import {StorageSlot} from "src/libraries/StorageSlot.sol";
 import {TypeConversion} from "src/libraries/TypeConversion.sol";
 import {Ownable} from "src/base/Ownable.sol";
+import {Validations} from "src/base/Validations.sol";
 
 /// @title AddressResolver
 /// @notice Main registry of protocol contracts
 /// @dev Modified from https://github.com/aave/aave-v3-core/blob/master/contracts/protocol/configuration/PoolAddressesProvider.sol
 /// and https://github.com/Vectorized/solady/blob/main/src/utils/ERC1967Factory.sol
 
-contract Configurator is IConfigurator, Ownable {
+contract Configurator is IConfigurator, Ownable, Validations {
 	using Errors for bytes4;
 	using StorageSlot for bytes32;
 	using TypeConversion for address;
@@ -39,8 +40,9 @@ contract Configurator is IConfigurator, Ownable {
 	}
 
 	function getAddress(bytes32 id) public view returns (address value) {
-		Errors.AddressNotSet.selector.required(
-			(value = ADDRESSES_SLOT.deriveMapping(id).sload().asAddress()) != address(0)
+		required(
+			(value = ADDRESSES_SLOT.deriveMapping(id).sload().asAddress()) != address(0),
+			Errors.AddressNotSet.selector
 		);
 	}
 

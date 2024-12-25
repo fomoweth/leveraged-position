@@ -16,7 +16,6 @@ import {Lender} from "./Lender.sol";
 
 contract AaveV3Lender is Lender {
 	using AaveReserves for uint256;
-	using Errors for bytes4;
 	using Math for uint256;
 	using PercentageMath for uint256;
 	using SafeCast for uint256;
@@ -346,7 +345,7 @@ contract AaveV3Lender is Lender {
 		uint256 answer = getAssetPrice(PRICE_ORACLE, currency);
 
 		address aggregator = getChainLinkAggregator(getSourceOfAsset(PRICE_ORACLE, currency));
-		Errors.InvalidFeed.selector.required(aggregator != address(0));
+		required(aggregator != address(0), Errors.InvalidFeed.selector);
 
 		assembly ("memory-safe") {
 			let ptr := mload(0x40)
@@ -780,7 +779,7 @@ contract AaveV3Lender is Lender {
 			price := mload(0x00)
 		}
 
-		Errors.InvalidPrice.selector.required(price != 0);
+		required(price != 0, Errors.InvalidPrice.selector);
 	}
 
 	function getSourceOfAsset(address oracle, Currency currency) internal view returns (address source) {
@@ -809,7 +808,7 @@ contract AaveV3Lender is Lender {
 
 			let ptr := mload(0x40)
 
-			mstore(ptr, 0x668a0f024ebdc284d221087c0000000000000000000000000000000000000000) // latestRound(), ASSET_TO_USD_AGGREGATOR(), BASE_TO_USD_AGGREGATOR()
+			mstore(ptr, 0x668a0f024ebdc284d221087cde4aedab00000000000000000000000000000000) // latestRound(), ASSET_TO_USD_AGGREGATOR(), BASE_TO_USD_AGGREGATOR(), PEG_TO_BASE()
 
 			if fetch(source, ptr) {
 				aggregator := source
@@ -821,6 +820,10 @@ contract AaveV3Lender is Lender {
 
 			if iszero(aggregator) {
 				aggregator := fetch(source, add(ptr, 0x08))
+			}
+
+			if iszero(aggregator) {
+				aggregator := fetch(source, add(ptr, 0x0c))
 			}
 		}
 	}

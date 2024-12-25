@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-interface AggregatorInterface {
+interface IAggregator {
 	event AnswerUpdated(int256 indexed current, uint256 indexed roundId, uint256 updatedAt);
 
 	event NewRound(uint256 indexed roundId, address indexed startedBy, uint256 startedAt);
 
 	struct Phase {
 		uint16 id;
-		AggregatorInterface aggregator;
+		IAggregator aggregator;
 	}
 
 	// V3
 
-	function aggregator() external view returns (AggregatorInterface);
+	function aggregator() external view returns (IAggregator);
 
 	function phaseId() external view returns (uint16);
 
@@ -53,15 +53,15 @@ interface AggregatorInterface {
 
 	function getTimestamp(uint256 roundId) external view returns (uint256);
 
-	function phaseAggregators(uint16 phaseId) external view returns (AggregatorInterface);
+	function phaseAggregators(uint16 phaseId) external view returns (IAggregator);
 
-	function proposedAggregator() external view returns (AggregatorInterface);
+	function proposedAggregator() external view returns (IAggregator);
 
 	// Admin
 
-	function proposeAggregator(AggregatorInterface aggregator) external;
+	function proposeAggregator(IAggregator aggregator) external;
 
-	function confirmAggregator(AggregatorInterface aggregator) external;
+	function confirmAggregator(IAggregator aggregator) external;
 
 	function accessController() external view returns (address);
 

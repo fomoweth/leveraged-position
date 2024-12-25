@@ -5,10 +5,10 @@ pragma solidity ^0.8.26;
 /// @dev Implementation from https://github.com/Vectorized/solady/blob/main/src/auth/Ownable.sol
 
 abstract contract Ownable {
-	// bytes32(~uint256(uint32(bytes4(keccak256("OWNER_SLOT_NOT")))))
+	/// bytes32(~uint256(uint32(bytes4(keccak256("OWNER_SLOT_NOT")))))
 	bytes32 private constant OWNER_SLOT = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff74873927;
 
-	// keccak256(bytes("OwnershipTransferred(address,address)"))
+	/// keccak256(bytes("OwnershipTransferred(address,address)"))
 	bytes32 private constant OWNERSHIP_TRANSFERRED_TOPIC =
 		0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0;
 

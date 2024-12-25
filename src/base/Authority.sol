@@ -2,13 +2,12 @@
 pragma solidity ^0.8.26;
 
 import {Errors} from "src/libraries/Errors.sol";
+import {Validations} from "./Validations.sol";
 
 /// @title Authority
 /// @notice Authorizes msg.sender of calls made to this contract
 
-abstract contract Authority {
-	using Errors for bytes4;
-
+abstract contract Authority is Validations {
 	address internal immutable self = address(this);
 
 	modifier checkDelegateCall() {
@@ -27,15 +26,15 @@ abstract contract Authority {
 	}
 
 	function _checkDelegateCall() private view {
-		Errors.NotDelegateCall.selector.required(self != address(this));
+		required(self != address(this), Errors.NotDelegateCall.selector);
 	}
 
 	function _checkNotDelegateCall() private view {
-		Errors.NoDelegateCall.selector.required(self == address(this));
+		required(self == address(this), Errors.NoDelegateCall.selector);
 	}
 
 	function _checkAuthority() private view {
-		Errors.Unauthorized.selector.required(isAuthorized(msg.sender));
+		required(isAuthorized(msg.sender), Errors.Unauthorized.selector);
 	}
 
 	function isAuthorized(address account) internal view virtual returns (bool);

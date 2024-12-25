@@ -37,13 +37,13 @@ library Math {
 		}
 	}
 
-	function shl(uint256 x, uint8 b) internal pure returns (uint256 z) {
+	function shiftLeft(uint256 x, uint8 b) internal pure returns (uint256 z) {
 		assembly ("memory-safe") {
 			z := shl(b, x)
 		}
 	}
 
-	function shr(uint256 x, uint8 b) internal pure returns (uint256 z) {
+	function shiftRight(uint256 x, uint8 b) internal pure returns (uint256 z) {
 		assembly ("memory-safe") {
 			z := shr(b, x)
 		}

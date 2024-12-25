@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-import {AggregatorInterface} from "../chainlink/AggregatorInterface.sol";
+import {IAggregator} from "../chainlink/IAggregator.sol";
 import {IACLManager} from "./v3/IACLManager.sol";
 
 interface ICLSynchronicityPriceAdapter {
@@ -34,7 +34,7 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
 
 	function SECONDS_PER_YEAR() external view returns (uint256);
 
-	function BASE_TO_USD_AGGREGATOR() external view returns (AggregatorInterface);
+	function BASE_TO_USD_AGGREGATOR() external view returns (IAggregator);
 
 	function RATIO_PROVIDER() external view returns (address);
 
@@ -62,11 +62,21 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
 interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
 	event PriceCapUpdated(int256 priceCap);
 
-	function ASSET_TO_USD_AGGREGATOR() external view returns (AggregatorInterface);
+	function ASSET_TO_USD_AGGREGATOR() external view returns (IAggregator);
 
 	function ACL_MANAGER() external view returns (IACLManager);
 
 	function setPriceCap(int256 priceCap) external;
 
 	function isCapped() external view returns (bool);
+}
+
+interface ICLSynchronicityPriceAdapterPegToBase is ICLSynchronicityPriceAdapter {
+	function PEG_TO_BASE() external view returns (IAggregator);
+
+	function ASSET_TO_PEG() external view returns (IAggregator);
+
+	function DECIMALS() external view returns (uint8);
+
+	function DENOMINATOR() external view returns (int256);
 }

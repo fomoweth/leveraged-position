@@ -7,12 +7,12 @@ import {Errors} from "src/libraries/Errors.sol";
 import {Path} from "src/libraries/Path.sol";
 import {SafeCast} from "src/libraries/SafeCast.sol";
 import {Currency} from "src/types/Currency.sol";
+import {Validations} from "./Validations.sol";
 
 /// @title V3Swap
 /// @notice Provides functions to interact with Uniswap V3 pools
 
-abstract contract V3Swap {
-	using Errors for bytes4;
+abstract contract V3Swap is Validations {
 	using Path for bytes;
 	using SafeCast for uint256;
 
@@ -63,7 +63,7 @@ abstract contract V3Swap {
 			? (uint256(amount0Delta), uint256(-amount1Delta))
 			: (uint256(amount1Delta), uint256(-amount0Delta));
 
-		Errors.InsufficientAmountOut.selector.required(amountOutReceived == amountOut);
+		required(amountOutReceived == amountOut, Errors.InsufficientAmountOut.selector);
 	}
 
 	function swap(

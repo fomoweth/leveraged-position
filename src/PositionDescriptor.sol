@@ -27,7 +27,7 @@ contract PositionDescriptor is IPositionDescriptor, Initializable {
 	}
 
 	function parseTicker(ILeveragedPosition position) external view returns (string memory) {
-		return parseTicker(ILender(position.lender()), position.collateralAsset(), position.liabilityAsset());
+		return parseTicker(ILender(position.LENDER()), position.COLLATERAL_ASSET(), position.LIABILITY_ASSET());
 	}
 
 	function parseTicker(
@@ -46,7 +46,7 @@ contract PositionDescriptor is IPositionDescriptor, Initializable {
 	}
 
 	function parseDescription(ILeveragedPosition position) external view returns (string memory) {
-		return parseDescription(ILender(position.lender()), position.collateralAsset(), position.liabilityAsset());
+		return parseDescription(ILender(position.LENDER()), position.COLLATERAL_ASSET(), position.LIABILITY_ASSET());
 	}
 
 	function parseDescription(

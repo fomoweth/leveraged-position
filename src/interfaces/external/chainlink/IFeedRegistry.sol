@@ -2,7 +2,7 @@
 pragma solidity ^0.8.26;
 
 import {Currency} from "src/types/Currency.sol";
-import {AggregatorInterface} from "./AggregatorInterface.sol";
+import {IAggregator} from "./IAggregator.sol";
 
 interface IFeedRegistry {
 	struct Phase {
@@ -67,13 +67,9 @@ interface IFeedRegistry {
 
 	// Registry getters
 
-	function getFeed(Currency base, Currency quote) external view returns (AggregatorInterface aggregator);
+	function getFeed(Currency base, Currency quote) external view returns (IAggregator aggregator);
 
-	function getPhaseFeed(
-		Currency base,
-		Currency quote,
-		uint16 phaseId
-	) external view returns (AggregatorInterface aggregator);
+	function getPhaseFeed(Currency base, Currency quote, uint16 phaseId) external view returns (IAggregator aggregator);
 
 	function isFeedEnabled(address aggregator) external view returns (bool);
 
@@ -81,11 +77,7 @@ interface IFeedRegistry {
 
 	// Round helpers
 
-	function getRoundFeed(
-		Currency base,
-		Currency quote,
-		uint80 roundId
-	) external view returns (AggregatorInterface aggregator);
+	function getRoundFeed(Currency base, Currency quote, uint80 roundId) external view returns (IAggregator aggregator);
 
 	function getPhaseRange(
 		Currency base,
@@ -109,10 +101,7 @@ interface IFeedRegistry {
 
 	// Proposed aggregator
 
-	function getProposedFeed(
-		Currency base,
-		Currency quote
-	) external view returns (AggregatorInterface proposedAggregator);
+	function getProposedFeed(Currency base, Currency quote) external view returns (IAggregator proposedAggregator);
 
 	function proposedGetRoundData(
 		Currency base,
