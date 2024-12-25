@@ -8,7 +8,7 @@ import {TypeConversion} from "src/libraries/TypeConversion.sol";
 import {Ownable} from "src/base/Ownable.sol";
 import {Validations} from "src/base/Validations.sol";
 
-/// @title AddressResolver
+/// @title Configurator
 /// @notice Main registry of protocol contracts
 /// @dev Modified from https://github.com/aave/aave-v3-core/blob/master/contracts/protocol/configuration/PoolAddressesProvider.sol
 /// and https://github.com/Vectorized/solady/blob/main/src/utils/ERC1967Factory.sol
