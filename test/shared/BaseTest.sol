@@ -5,15 +5,22 @@ import {Test} from "forge-std/Test.sol";
 import {StdStorage, stdStorage} from "forge-std/StdStorage.sol";
 
 import {ISTETH} from "src/interfaces/external/token/ISTETH.sol";
+import {CurrencyNamer} from "src/libraries/CurrencyNamer.sol";
 import {Currency} from "src/types/Currency.sol";
+
+import {Configured} from "config/Configured.sol";
 
 import {Assertions} from "./extensions/Assertions.sol";
 import {Common} from "./extensions/Common.sol";
-import {Fork} from "./extensions/Fork.sol";
 import {ProxyHelper} from "./extensions/ProxyHelper.sol";
 
-abstract contract BaseTest is Test, Assertions, Common, Fork, ProxyHelper {
+import {AaveV3Config, AaveMarket, CometConfig, CometMarket} from "./Protocols.sol";
+
+abstract contract BaseTest is Test, Configured, Assertions, ProxyHelper {
+	using CurrencyNamer for Currency;
 	using stdStorage for StdStorage;
+
+	uint256 internal forkId;
 
 	uint256 internal snapshotId = MAX_UINT256;
 
@@ -23,36 +30,28 @@ abstract contract BaseTest is Test, Assertions, Common, Fork, ProxyHelper {
 		vm.stopPrank();
 	}
 
-	modifier onlyEthereum() {
-		vm.skip(block.chainid != ETHEREUM_CHAIN_ID);
-		_;
-	}
-
-	modifier onlyOptimism() {
-		vm.skip(block.chainid != OPTIMISM_CHAIN_ID);
-		_;
-	}
-
-	modifier onlyPolygon() {
-		vm.skip(block.chainid != POLYGON_CHAIN_ID);
-		_;
-	}
-
-	modifier onlyArbitrum() {
-		vm.skip(block.chainid != ARBITRUM_CHAIN_ID);
-		_;
-	}
-
 	function setUp() public virtual {
 		configure();
 		labelAll();
 	}
 
 	function configure() internal virtual override {
-		if (block.chainid == 31337) vm.chainId(ETHEREUM_CHAIN_ID);
+		if (block.chainid == 31337) vm.chainId(1);
 
 		super.configure();
 		fork();
+	}
+
+	function fork() internal virtual {
+		uint256 forkBlockNumber = getForkBlockNumber();
+
+		if (forkBlockNumber != 0) {
+			forkId = vm.createSelectFork(vm.rpcUrl(rpcAlias()), forkBlockNumber);
+		} else {
+			forkId = vm.createSelectFork(vm.rpcUrl(rpcAlias()));
+		}
+
+		vm.chainId(getChainId());
 	}
 
 	function revertToState() internal virtual {
@@ -65,12 +64,54 @@ abstract contract BaseTest is Test, Assertions, Common, Fork, ProxyHelper {
 		snapshotId = vm.snapshotState();
 	}
 
-	function makeAccount(string memory name) internal virtual override returns (Account memory account) {
-		deal((account = super.makeAccount(name)).addr, 100 ether);
+	function advanceBlock(uint256 blocks) internal virtual {
+		vm.roll(vm.getBlockNumber() + blocks);
+		vm.warp(vm.getBlockTimestamp() + blocks * SECONDS_PER_BLOCK);
 	}
 
-	function setApproval(Currency currency, address account, address spender) internal virtual impersonate(account) {
-		currency.approve(spender, MAX_UINT256);
+	function advanceTime(uint256 time) internal virtual {
+		vm.warp(vm.getBlockTimestamp() + time);
+		vm.roll(vm.getBlockNumber() + time * SECONDS_PER_BLOCK);
+	}
+
+	function boundBlocks(uint256 blocks) internal pure returns (uint256) {
+		return bound(blocks, 1, 7 days / SECONDS_PER_BLOCK);
+	}
+
+	function randomAsset(Currency exception) internal virtual returns (Currency) {
+		return randomAsset(allAssets, exception);
+	}
+
+	function randomAsset() internal virtual returns (Currency) {
+		return randomAsset(allAssets);
+	}
+
+	function randomAsset(Currency[] memory assets, Currency exception) internal virtual returns (Currency asset) {
+		while (true) if ((asset = randomAsset(assets)) != exception) break;
+	}
+
+	function randomAsset(Currency[] memory assets) internal virtual returns (Currency) {
+		vm.assume(assets.length != 0);
+		return assets[vm.randomUint(0, assets.length - 1)];
+	}
+
+	function randomBytes(uint256 seed) internal pure returns (bytes memory result) {
+		assembly ("memory-safe") {
+			mstore(0x00, seed)
+			let r := keccak256(0x00, 0x20)
+
+			if lt(byte(2, r), 0x20) {
+				result := mload(0x40)
+				let n := and(r, 0x7f)
+				mstore(result, n)
+				codecopy(add(result, 0x20), byte(1, r), add(n, 0x40))
+				mstore(0x40, add(add(result, 0x40), n))
+			}
+		}
+	}
+
+	function makeAccount(string memory name) internal virtual override returns (Account memory account) {
+		deal((account = super.makeAccount(name)).addr, 100 ether);
 	}
 
 	function setApprovals(
@@ -134,6 +175,78 @@ abstract contract BaseTest is Test, Assertions, Common, Fork, ProxyHelper {
 			}
 		} else {
 			deal(currency.toAddress(), account, amount, adjust);
+		}
+	}
+
+	function encodePrivateKey(string memory key) internal pure returns (uint256) {
+		return uint256(keccak256(abi.encodePacked(key)));
+	}
+
+	function encodeSlot(bytes32 slot, bytes32 key) internal pure returns (bytes32) {
+		return keccak256(abi.encode(key, slot));
+	}
+
+	function labelAll() internal virtual {
+		vm.label(address(UNISWAP_V3_FACTORY), "Uniswap V3 Factory");
+		vm.label(address(UNISWAP_V3_QUOTER), "Uniswap V3 Quoter");
+		vm.label(address(PERMIT2), "Permit2");
+		vm.label(address(FEED_REGISTRY), "FeedRegistry");
+		labelAaveV3();
+		labelComet();
+	}
+
+	function labelAaveV3() internal virtual {
+		if (bytes(aaveV3.context.network).length == 0) return;
+
+		string memory prefix = string.concat("Aave V3 ", aaveV3.context.protocol, ": ");
+
+		vm.label(aaveV3.aclAdmin, string.concat(prefix, "ACLAdmin"));
+		vm.label(address(aaveV3.aclManager), string.concat(prefix, "ACLManager"));
+		vm.label(address(aaveV3.addressesProvider), string.concat(prefix, "PoolAddressesProvider"));
+		vm.label(address(aaveV3.dataProvider), string.concat(prefix, "PoolDataProvider"));
+		vm.label(address(aaveV3.pool), string.concat(prefix, "Pool"));
+		vm.label(address(aaveV3.oracle), string.concat(prefix, "PriceOracle"));
+		vm.label(address(aaveV3.rewardsController), string.concat(prefix, "RewardsController"));
+		vm.label(address(aaveV3.emissionManager), string.concat(prefix, "EmissionManager"));
+		vm.label(address(aaveV3.collector), string.concat(prefix, "Collector"));
+	}
+
+	function labelAaveMarket(AaveMarket memory market) internal virtual {
+		if (bytes(market.symbol).length == 0) return;
+
+		string memory prefix = string.concat(aaveV3.context.abbreviation, market.symbol);
+
+		vm.label(market.underlying.toAddress(), market.symbol);
+		vm.label(address(market.aToken), string.concat("a", prefix));
+		vm.label(address(market.vdToken), string.concat("variableDebt", prefix));
+	}
+
+	function labelComet() internal virtual {
+		if (compV3.governor == address(0)) return;
+
+		vm.label(compV3.governor, "CometGovernor");
+		vm.label(address(compV3.configurator), "CometConfigurator");
+		vm.label(address(compV3.rewards), "CometRewards");
+	}
+
+	function labelCometMarket(CometMarket memory market) internal virtual {
+		if (bytes(market.symbol).length == 0) return;
+
+		vm.label(market.underlying.toAddress(), market.base);
+		vm.label(address(market.comet), market.symbol);
+
+		for (uint256 i; i < market.assets.length; ++i) {
+			vm.label(market.assets[i].underlying.toAddress(), market.assets[i].symbol);
+		}
+	}
+
+	function labelCurrency(Currency currency) internal virtual {
+		label(currency.toAddress(), currency.symbol());
+	}
+
+	function label(address target, string memory name) internal virtual {
+		if (target != address(0) && bytes10(bytes(vm.getLabel(target))) == UNLABELED_PREFIX) {
+			vm.label(target, name);
 		}
 	}
 }

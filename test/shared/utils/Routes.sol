@@ -1,25 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
+import {console2 as console} from "forge-std/Test.sol";
+
 import {Vm} from "forge-std/Vm.sol";
 import {Strings} from "@openzeppelin/utils/Strings.sol";
 
 import {IQuoter} from "src/interfaces/external/uniswap/v3/IQuoter.sol";
 import {IUniswapV3Pool} from "src/interfaces/external/uniswap/v3/IUniswapV3Pool.sol";
+import {BytesLib} from "src/libraries/BytesLib.sol";
+import {Math} from "src/libraries/Math.sol";
 import {CurrencyNamer} from "src/libraries/CurrencyNamer.sol";
 import {Currency} from "src/types/Currency.sol";
 
 import {Configured} from "config/Configured.sol";
 
-import {Common} from "test/shared/extensions/Common.sol";
+import {Constants} from "test/shared/extensions/Constants.sol";
 import {Arrays} from "./Arrays.sol";
 import {LiquidityAmounts} from "./LiquidityAmounts.sol";
 import {TickMath} from "./TickMath.sol";
 
-contract Routes is Configured, Common {
+contract Routes is Configured, Constants {
 	using Arrays for Currency[];
 	using Arrays for uint24[];
 	using CurrencyNamer for Currency;
+	using Math for uint256;
 
 	Vm private constant vm = Vm(VM);
 
@@ -64,13 +69,13 @@ contract Routes is Configured, Common {
 				currencyIn,
 				currencyIntermediate
 			);
-			if (!isContract(address(poolIntermediate0))) continue;
+			if (!isContract(poolIntermediate0)) continue;
 
 			(IUniswapV3Pool poolIntermediate1, uint24 fee1, ) = getPoolWithMostLiquidity(
 				currencyIntermediate,
 				currencyOut
 			);
-			if (!isContract(address(poolIntermediate1))) continue;
+			if (!isContract(poolIntermediate1)) continue;
 
 			try
 				UNISWAP_V3_QUOTER.quoteExactInput(
@@ -126,10 +131,10 @@ contract Routes is Configured, Common {
 			if (currencyOut == currencyIntermediate || currencyIn == currencyIntermediate) continue;
 
 			(IUniswapV3Pool pool0, uint24 fee0, ) = getPoolWithMostLiquidity(currencyOut, currencyIntermediate);
-			if (!isContract(address(pool0))) continue;
+			if (!isContract(pool0)) continue;
 
 			(IUniswapV3Pool pool1, uint24 fee1, ) = getPoolWithMostLiquidity(currencyIntermediate, currencyIn);
-			if (!isContract(address(pool1))) continue;
+			if (!isContract(pool1)) continue;
 
 			try
 				UNISWAP_V3_QUOTER.quoteExactOutput(
@@ -177,7 +182,7 @@ contract Routes is Configured, Common {
 		for (uint256 i; i < fees.length; ++i) {
 			uint24 feeCurrent = fees[i];
 			IUniswapV3Pool poolCurrent = getPool(currencyIn, currencyOut, feeCurrent);
-			if (!isContract(address(poolCurrent)) || poolCurrent.liquidity() == 0) continue;
+			if (!isContract(poolCurrent) || poolCurrent.liquidity() == 0) continue;
 
 			try
 				UNISWAP_V3_QUOTER.quoteExactInputSingle(
@@ -185,7 +190,7 @@ contract Routes is Configured, Common {
 						currencyIn: currencyIn,
 						currencyOut: currencyOut,
 						amountIn: amountIn,
-						fee: fee,
+						fee: feeCurrent,
 						sqrtPriceLimitX96: 0
 					})
 				)
@@ -213,7 +218,7 @@ contract Routes is Configured, Common {
 		for (uint256 i; i < fees.length; ++i) {
 			uint24 feeCurrent = fees[i];
 			IUniswapV3Pool poolCurrent = getPool(currencyOut, currencyIn, feeCurrent);
-			if (!isContract(address(poolCurrent)) || poolCurrent.liquidity() == 0) continue;
+			if (!isContract(poolCurrent) || poolCurrent.liquidity() == 0) continue;
 
 			try
 				UNISWAP_V3_QUOTER.quoteExactOutputSingle(
@@ -221,7 +226,7 @@ contract Routes is Configured, Common {
 						currencyIn: currencyIn,
 						currencyOut: currencyOut,
 						amountOut: amountOut,
-						fee: fee,
+						fee: feeCurrent,
 						sqrtPriceLimitX96: 0
 					})
 				)
@@ -276,7 +281,7 @@ contract Routes is Configured, Common {
 
 		for (uint256 i; i < fees.length; ++i) {
 			IUniswapV3Pool poolCurrent = getPool(currencyA, currencyB, fees[i]);
-			if (!isContract(address(poolCurrent))) continue;
+			if (!isContract(poolCurrent)) continue;
 
 			uint128 liquidityCurrent = poolCurrent.liquidity();
 			if (liquidityCurrent > liquidity) {
@@ -292,27 +297,67 @@ contract Routes is Configured, Common {
 	}
 
 	function labelPool(IUniswapV3Pool pool) public {
-		if (isContract(address(pool))) {
-			vm.label(
-				address(pool),
-				string.concat(
-					"UNI-V3: ",
-					pool.token0().symbol(),
-					"/",
-					pool.token1().symbol(),
-					" ",
-					parseFeeString(pool.fee())
-				)
-			);
+		if (isContract(pool)) {
+			vm.label(address(pool), parsePoolName(pool));
 		}
 	}
 
+	function parsePoolName(IUniswapV3Pool pool) public view returns (string memory) {
+		return
+			string.concat(
+				"UNI-V3: ",
+				pool.token0().symbol(),
+				"/",
+				pool.token1().symbol(),
+				" ",
+				parseFeeString(pool.fee())
+			);
+	}
+
 	function parseFeeString(uint24 fee) public pure returns (string memory feeStr) {
-		feeStr = string.concat(
-			Strings.toString(fee / 100),
-			fee % 100 != 0 ? string.concat(".", Strings.toString((fee / 10) % 10), Strings.toString(fee % 10)) : "",
-			"bps"
-		);
+		return
+			string.concat(
+				Strings.toString(fee / 100),
+				fee % 100 != 0 ? string.concat(".", Strings.toString((fee / 10) % 10), Strings.toString(fee % 10)) : "",
+				"bps"
+			);
+	}
+
+	function parsePath(bytes memory path) public pure returns (Currency[] memory currencies, uint24[] memory fees) {
+		uint256 numPools = numberOfPools(path);
+		vm.assertGt(numPools, 0, "!numPools");
+
+		currencies = new Currency[](numPools + 1);
+		fees = new uint24[](numPools);
+
+		for (uint256 i; i < numPools; ++i) {
+			currencies[i] = parseCurrency(path, i);
+			fees[i] = parseFee(path, i);
+		}
+
+		currencies[numPools] = parseCurrency(path, numPools);
+	}
+
+	function parseLast(bytes memory path) internal pure returns (Currency currency, uint24 fee) {
+		uint256 numPools = numberOfPools(path);
+		currency = parseCurrency(path, numPools);
+		fee = parseFee(path, numPools - 1);
+	}
+
+	function parseCurrency(bytes memory path, uint256 offset) public pure returns (Currency currency) {
+		assembly ("memory-safe") {
+			currency := shr(0x60, mload(add(add(path, 0x20), mul(offset, NEXT_OFFSET))))
+		}
+	}
+
+	function parseFee(bytes memory path, uint256 offset) public pure returns (uint24 fee) {
+		assembly ("memory-safe") {
+			fee := mload(add(add(path, 0x03), add(mul(offset, NEXT_OFFSET), ADDR_SIZE)))
+		}
+	}
+
+	function numberOfPools(bytes memory path) internal pure returns (uint256) {
+		return (path.length - ADDR_SIZE) / NEXT_OFFSET;
 	}
 
 	function encodePath(Currency[] memory currencies, uint24[] memory fees) public pure returns (bytes memory path) {
@@ -336,6 +381,57 @@ contract Routes is Configured, Common {
 		for (uint256 i; i < fees.length; ++i) {
 			path = abi.encodePacked(path, fees[i], currencies[i + 1]);
 		}
+	}
+
+	function isContract(IUniswapV3Pool pool) internal view returns (bool flag) {
+		assembly ("memory-safe") {
+			flag := iszero(iszero(extcodesize(pool)))
+		}
+	}
+
+	function getCurrencies(Currency currency0, Currency currency1) public pure returns (Currency[] memory currencies) {
+		currencies = new Currency[](2);
+		currencies[0] = currency0;
+		currencies[1] = currency1;
+	}
+
+	function getCurrencies(
+		Currency currency0,
+		Currency currency1,
+		Currency currency2
+	) public pure returns (Currency[] memory currencies) {
+		currencies = new Currency[](3);
+		currencies[0] = currency0;
+		currencies[1] = currency1;
+		currencies[2] = currency2;
+	}
+
+	function getCurrencies(
+		Currency currency0,
+		Currency currency1,
+		Currency currency2,
+		Currency currency3
+	) public pure returns (Currency[] memory currencies) {
+		currencies = new Currency[](4);
+		currencies[0] = currency0;
+		currencies[1] = currency1;
+		currencies[2] = currency2;
+		currencies[3] = currency3;
+	}
+
+	function getCurrencies(
+		Currency currency0,
+		Currency currency1,
+		Currency currency2,
+		Currency currency3,
+		Currency currency4
+	) public pure returns (Currency[] memory currencies) {
+		currencies = new Currency[](5);
+		currencies[0] = currency0;
+		currencies[1] = currency1;
+		currencies[2] = currency2;
+		currencies[3] = currency3;
+		currencies[4] = currency4;
 	}
 
 	function getPoolFees() public pure returns (uint24[] memory fees) {
@@ -375,5 +471,23 @@ contract Routes is Configured, Common {
 		fees[1] = fee1;
 		fees[2] = fee2;
 		fees[3] = fee3;
+	}
+
+	function convertZeroForOne(uint256 amount0, uint160 sqrtPriceX96) public pure returns (uint256) {
+		unchecked {
+			return
+				sqrtPriceX96 < MAX_UINT128
+					? Math.mulDiv(uint256(sqrtPriceX96) * sqrtPriceX96, amount0, 1 << 192)
+					: Math.mulDiv(Math.mulDiv(sqrtPriceX96, sqrtPriceX96, 1 << 64), amount0, 1 << 128);
+		}
+	}
+
+	function convertOneForZero(uint256 amount1, uint160 sqrtPriceX96) public pure returns (uint256) {
+		unchecked {
+			return
+				sqrtPriceX96 < MAX_UINT128
+					? Math.mulDiv(1 << 192, amount1, uint256(sqrtPriceX96) * sqrtPriceX96)
+					: Math.mulDiv(1 << 128, amount1, Math.mulDiv(sqrtPriceX96, sqrtPriceX96, 1 << 64));
+		}
 	}
 }

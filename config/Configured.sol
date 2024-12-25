@@ -12,63 +12,33 @@ import {Config} from "./Config.sol";
 contract Configured {
 	Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
 
-	uint256 private constant ETHEREUM_CHAIN_ID = 1;
-	uint256 private constant OPTIMISM_CHAIN_ID = 10;
-	uint256 private constant POLYGON_CHAIN_ID = 137;
-	uint256 private constant ARBITRUM_CHAIN_ID = 42161;
-
-	string internal constant ETHEREUM_NETWORK = "ethereum";
-	string internal constant OPTIMISM_NETWORK = "optimism";
-	string internal constant POLYGON_NETWORK = "polygon";
-	string internal constant ARBITRUM_NETWORK = "arbitrum";
-
 	Config internal config;
 
-	string internal network;
-
-	Currency internal WNATIVE;
 	Currency internal WETH;
 	Currency internal STETH;
 	Currency internal WSTETH;
-	Currency internal WBTC;
+	Currency internal WEETH;
 
 	Currency internal DAI;
+	Currency internal FRAX;
 	Currency internal USDC;
-	Currency internal USDCe;
 	Currency internal USDT;
 
+	Currency internal WBTC;
 	Currency internal AAVE;
 	Currency internal COMP;
 	Currency internal LINK;
-	Currency internal UNI;
 
 	Currency[] internal allAssets;
 	Currency[] internal intermediateCurrencies;
-	Currency[] internal stablecoins;
 
 	AaveV3Config internal aaveV3;
 	CometConfig internal compV3;
 
 	function configure() internal virtual {
-		uint256 chainId = block.chainid;
-
-		if (chainId == 0) {
-			revert("chain id must be specified (`--chain <chainid>`)");
-		} else if (chainId == ETHEREUM_CHAIN_ID) {
-			network = ETHEREUM_NETWORK;
-		} else if (chainId == OPTIMISM_CHAIN_ID) {
-			network = OPTIMISM_NETWORK;
-		} else if (chainId == POLYGON_CHAIN_ID) {
-			network = POLYGON_NETWORK;
-		} else if (chainId == ARBITRUM_CHAIN_ID) {
-			network = ARBITRUM_NETWORK;
-		} else {
-			revert(string.concat("Unsupported chain: ", vm.toString(chainId)));
-		}
-
 		if (bytes(config.json).length == 0) {
 			string memory root = vm.projectRoot();
-			string memory path = string.concat(root, "/config/", network, ".json");
+			string memory path = string.concat(root, "/config/ethereum.json");
 
 			config.json = vm.readFile(path);
 		}
@@ -77,24 +47,22 @@ contract Configured {
 	}
 
 	function configureAssets() internal virtual {
-		WNATIVE = config.getWrappedNative();
 		WETH = config.getCurrency("WETH");
 		STETH = config.getCurrency("stETH");
 		WSTETH = config.getCurrency("wstETH");
-		WBTC = config.getCurrency("WBTC");
+		WEETH = config.getCurrency("weETH");
 
 		DAI = config.getCurrency("DAI");
+		FRAX = config.getCurrency("FRAX");
 		USDC = config.getCurrency("USDC");
-		USDCe = config.getCurrency("USDCe");
 		USDT = config.getCurrency("USDT");
 
+		WBTC = config.getCurrency("WBTC");
 		AAVE = config.getCurrency("AAVE");
 		COMP = config.getCurrency("COMP");
 		LINK = config.getCurrency("LINK");
-		UNI = config.getCurrency("UNI");
 
 		intermediateCurrencies = config.getIntermediateCurrencies();
-		stablecoins = config.getStablecoins();
 	}
 
 	function configureAaveV3(string memory key) internal virtual {

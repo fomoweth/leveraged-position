@@ -58,10 +58,10 @@ contract PositionDeployerTest is BaseTest {
 	}
 
 	function verifyPosition(LeveragedPosition position, uint256 nonce) internal view {
-		assertEq(position.owner(), owner, "!owner");
-		assertEq(position.lender(), lender, "!lender");
-		assertEq(position.collateralAsset(), WETH, "!collateralAsset");
-		assertEq(position.liabilityAsset(), USDC, "!liabilityAsset");
+		assertEq(position.OWNER(), owner, "!owner");
+		assertEq(position.LENDER(), lender, "!lender");
+		assertEq(position.COLLATERAL_ASSET(), WETH, "!collateralAsset");
+		assertEq(position.LIABILITY_ASSET(), USDC, "!liabilityAsset");
 
 		bytes32 salt = bytes32(uint256(keccak256(abi.encode(owner, lender, WETH, USDC))) + nonce);
 		assertEq(address(position), deployer.getPosition(salt));

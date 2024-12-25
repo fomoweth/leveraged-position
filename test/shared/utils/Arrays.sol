@@ -7,6 +7,34 @@ import {Bytes32Cast} from "./Bytes32Cast.sol";
 library Arrays {
 	using Bytes32Cast for *;
 
+	function contains(bytes32[] memory input, bytes32 target) internal pure returns (uint256, bool) {
+		uint256 length = input.length;
+		uint256 offset;
+
+		while (offset < length) {
+			if (input[offset] == target) return (offset, true);
+			++offset;
+		}
+
+		return (offset, false);
+	}
+
+	function contains(address[] memory input, address target) internal pure returns (uint256, bool) {
+		return contains(input.castToBytes32Array(), target.castToBytes32());
+	}
+
+	function contains(Currency[] memory input, Currency target) internal pure returns (uint256, bool) {
+		return contains(input.castToBytes32Array(), target.castToBytes32());
+	}
+
+	function contains(uint24[] memory input, uint24 target) internal pure returns (uint256, bool) {
+		return contains(input.castToBytes32Array(), uint256(target).castToBytes32());
+	}
+
+	function contains(uint256[] memory input, uint256 target) internal pure returns (uint256, bool) {
+		return contains(input.castToBytes32Array(), target.castToBytes32());
+	}
+
 	function filter(bytes32[] memory input, bytes32 target) internal pure returns (bytes32[] memory output) {
 		uint256 length = input.length;
 		uint256 count;

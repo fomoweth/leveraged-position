@@ -22,9 +22,7 @@ library ConfigLibrary {
 	string internal constant RPC_ALIAS_PATH = "$.rpcAlias";
 	string internal constant FORK_BLOCK_NUMBER_PATH = "$.forkBlockNumber";
 
-	string internal constant WRAPPED_NATIVE_PATH = "$.wrappedNative";
 	string internal constant INTERMEDIATE_CURRENCIES_PATH = "$.intermediateCurrencies";
-	string internal constant STABLECOINS_PATH = "$.stablecoins";
 
 	string internal constant AAVE_V3_PATH = "$.aave-v3.";
 	string internal constant AAVE_V3_MARKETS_PATH = "$.markets.aave-v3.";
@@ -92,16 +90,8 @@ library ConfigLibrary {
 		return config.json.readUint(FORK_BLOCK_NUMBER_PATH);
 	}
 
-	function getWrappedNative(Config storage config) internal view returns (Currency) {
-		return getCurrency(config, config.json.readString(WRAPPED_NATIVE_PATH));
-	}
-
 	function getIntermediateCurrencies(Config storage config) internal view returns (Currency[] memory) {
 		return getCurrencyArray(config, config.json.readStringArray(INTERMEDIATE_CURRENCIES_PATH));
-	}
-
-	function getStablecoins(Config storage config) internal view returns (Currency[] memory) {
-		return getCurrencyArray(config, config.json.readStringArray(STABLECOINS_PATH));
 	}
 
 	function getAaveV3Config(Config storage config, string memory key) internal view returns (AaveV3Config memory) {

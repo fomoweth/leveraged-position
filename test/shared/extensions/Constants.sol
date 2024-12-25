@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
+import {IAggregator} from "src/interfaces/external/chainlink/IAggregator.sol";
 import {IFeedRegistry} from "src/interfaces/external/chainlink/IFeedRegistry.sol";
 import {IQuoter} from "src/interfaces/external/uniswap/v3/IQuoter.sol";
 import {IUniswapV3Factory} from "src/interfaces/external/uniswap/v3/IUniswapV3Factory.sol";
@@ -12,25 +13,13 @@ abstract contract Constants {
 
 	bytes10 internal constant UNLABELED_PREFIX = bytes10("unlabeled:");
 
-	uint256 internal constant ETHEREUM_CHAIN_ID = 1;
-	uint256 internal constant OPTIMISM_CHAIN_ID = 10;
-	uint256 internal constant POLYGON_CHAIN_ID = 137;
-	uint256 internal constant ARBITRUM_CHAIN_ID = 42161;
-
-	uint256 internal constant ETHEREUM_BLOCKS_PER_DAY = 7200;
-	uint256 internal constant OPTIMISM_BLOCKS_PER_DAY = 43200;
-	uint256 internal constant POLYGON_BLOCKS_PER_DAY = 37894;
-	uint256 internal constant ARBITRUM_BLOCKS_PER_DAY = 345600;
-
+	uint256 internal constant BLOCKS_PER_DAY = 7200;
+	uint256 internal constant BLOCKS_PER_YEAR = 2628000;
+	uint256 internal constant SECONDS_PER_BLOCK = 12;
 	uint256 internal constant SECONDS_PER_DAY = 86400;
 	uint256 internal constant SECONDS_PER_YEAR = 31536000;
 
 	uint256 internal constant BPS = 1e4;
-
-	uint256 internal constant Q192 = 0x1000000000000000000000000000000000000000000000000;
-	uint256 internal constant Q128 = 0x100000000000000000000000000000000;
-	uint256 internal constant Q96 = 0x1000000000000000000000000;
-	uint256 internal constant Q64 = 0x10000000000000000;
 
 	uint256 internal constant MAX_UINT256 = (1 << 256) - 1;
 	uint160 internal constant MAX_UINT160 = (1 << 160) - 1;

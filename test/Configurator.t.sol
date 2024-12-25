@@ -66,7 +66,7 @@ contract ConfiguratorTest is BaseTest {
 		configureAaveV3("aave");
 	}
 
-	function test_deployment() public {
+	function test_deployment() internal {
 		vm.expectRevert(Errors.InvalidNewOwner.selector);
 		new Configurator(address(0));
 
@@ -86,12 +86,12 @@ contract ConfiguratorTest is BaseTest {
 		assertEq(configurator.owner(), address(0));
 	}
 
-	function test_setAddress_revertsWithUnauthorized() public {
+	function test_setAddress_revertsWithUnauthorized() internal {
 		vm.expectRevert(Errors.Unauthorized.selector);
 		configurator.setAddress(aaveV3.id, v1Impl);
 	}
 
-	function test_setAddress() public {
+	function test_setAddress() internal {
 		vm.expectRevert(Errors.AddressNotSet.selector);
 		configurator.getAddress(aaveV3.id);
 
@@ -112,12 +112,12 @@ contract ConfiguratorTest is BaseTest {
 		vm.stopPrank();
 	}
 
-	function test_setAddressAsProxy_revertsWithUnauthorized() public {
+	function test_setAddressAsProxy_revertsWithUnauthorized() internal {
 		vm.expectRevert(Errors.Unauthorized.selector);
 		configurator.setAddressAsProxy(aaveV3.id, v1Impl);
 	}
 
-	function test_setAddressAsProxy() public {
+	function test_setAddressAsProxy() internal {
 		assertEq(getAddress(aaveV3.id), address(0));
 		assertEq(getImplementation(aaveV3.id), address(0));
 
@@ -140,12 +140,12 @@ contract ConfiguratorTest is BaseTest {
 		vm.stopPrank();
 	}
 
-	function test_setPositionDeployerImpl_revertsWithUnauthorized() public {
+	function test_setPositionDeployerImpl_revertsWithUnauthorized() internal {
 		vm.expectRevert(Errors.Unauthorized.selector);
 		configurator.setPositionDeployerImpl(v1DeployerImpl);
 	}
 
-	function test_setPositionDeployerImpl() public {
+	function test_setPositionDeployerImpl() internal {
 		assertEq(getAddress(POSITION_DEPLOYER), address(0));
 		assertEq(getImplementation(POSITION_DEPLOYER), address(0));
 
@@ -155,8 +155,8 @@ contract ConfiguratorTest is BaseTest {
 		vm.startPrank(admin);
 
 		configurator.setPositionDeployerImpl(v1DeployerImpl);
+		deployer = configurator.getPositionDeployer();
 
-		assertNotEq((deployer = configurator.getPositionDeployer()), address(0));
 		assertEq(getImplementation(POSITION_DEPLOYER), v1DeployerImpl);
 		assertEq(getRevision(deployer), 1);
 
@@ -170,12 +170,12 @@ contract ConfiguratorTest is BaseTest {
 		vm.stopPrank();
 	}
 
-	function test_setPositionDescriptorImpl_revertsWithUnauthorized() public {
+	function test_setPositionDescriptorImpl_revertsWithUnauthorized() internal {
 		vm.expectRevert(Errors.Unauthorized.selector);
 		configurator.setPositionDescriptorImpl(descriptorImpl);
 	}
 
-	function test_setPositionDescriptorImpl() public {
+	function test_setPositionDescriptorImpl() internal {
 		assertEq(getAddress(POSITION_DESCRIPTOR), address(0));
 		assertEq(getImplementation(POSITION_DESCRIPTOR), address(0));
 
@@ -185,8 +185,8 @@ contract ConfiguratorTest is BaseTest {
 		vm.startPrank(admin);
 
 		configurator.setPositionDescriptorImpl(descriptorImpl);
+		descriptor = configurator.getPositionDescriptor();
 
-		assertNotEq((descriptor = configurator.getPositionDescriptor()), address(0));
 		assertEq(getImplementation(POSITION_DESCRIPTOR), descriptorImpl);
 		assertEq(getRevision(descriptor), 1);
 
