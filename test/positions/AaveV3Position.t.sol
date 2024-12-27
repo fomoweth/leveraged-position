@@ -130,7 +130,7 @@ contract AaveV3EtherFiTest is AaveV3PositionTest {
 	function setUpMarkets(string memory key) internal virtual override {
 		super.setUpMarkets(key);
 
-		liabilityAssets = [WETH, USDC];
+		liabilityAssets = [USDC, FRAX];
 	}
 
 	function test_increaseLiquidity_revertsWithInvalidCollateralAsset() public virtual override {

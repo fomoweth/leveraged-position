@@ -4,6 +4,7 @@ pragma solidity ^0.8.26;
 import {Errors} from "src/libraries/Errors.sol";
 import {Currency} from "src/types/Currency.sol";
 import {Configurator} from "src/Configurator.sol";
+import {AaveV3Lender} from "src/modules/AaveV3Lender.sol";
 import {LeveragedPosition} from "src/LeveragedPosition.sol";
 import {PositionDeployer} from "src/PositionDeployer.sol";
 
@@ -12,13 +13,15 @@ import {BaseTest} from "test/shared/BaseTest.sol";
 // forge test --match-path test/PositionDeployer.t.sol --chain 1 -vv
 
 contract PositionDeployerTest is BaseTest {
+	string internal constant AAVE_V3_AAVE_KEY = "aave";
+	bytes32 internal constant AAVE_V3_AAVE_ID = "AAVE-V3: Aave";
+
 	Configurator internal configurator;
 
-	address internal deployerImpl;
 	PositionDeployer internal deployer;
 
 	address internal owner = address(this);
-	address internal lender = address(1);
+	address internal lender;
 
 	bytes internal creationCode = type(LeveragedPosition).creationCode;
 	bytes internal constructorParams;
@@ -28,12 +31,30 @@ contract PositionDeployerTest is BaseTest {
 		super.setUp();
 
 		configurator = new Configurator(address(this));
-		configurator.setPositionDeployerImpl((deployerImpl = address(new PositionDeployer())));
+		configurator.setPositionDeployerImpl(address(new PositionDeployer()));
 
 		deployer = PositionDeployer(configurator.getPositionDeployer());
 
+		configurator.setAddress(
+			AAVE_V3_AAVE_ID,
+			lender = address(
+				new AaveV3Lender(
+					AAVE_V3_AAVE_ID,
+					address(aaveV3.pool),
+					address(aaveV3.oracle),
+					address(aaveV3.rewardsController)
+				)
+			)
+		);
+
 		constructorParams = abi.encode(lender, WETH, USDC);
 		parameters = abi.encode(creationCode, constructorParams);
+	}
+
+	function configure() internal virtual override {
+		super.configure();
+
+		configureAaveV3(AAVE_V3_AAVE_KEY);
 	}
 
 	function test_deployPosition_failsWithInvalidParameters() public {
