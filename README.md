@@ -6,7 +6,11 @@ LeveragedPosition is a position management contract that can allow users to crea
 
 ### Configurator
 
+Configurator is main registry of protocol contracts. It also behaves as factory of proxy contracts and their admin.
+
 ### PositionDeployer
+
+PositionDeployer is factory of LeveragedPosition that can allow users to deploy positions permissionlessly.
 
 ### PositionDescriptor
 
