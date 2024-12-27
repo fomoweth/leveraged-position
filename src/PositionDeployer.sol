@@ -114,12 +114,6 @@ contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable, V
 		return POSITIONS_SLOT.deriveMapping(salt).sload().asAddress();
 	}
 
-	function isContract(address target) internal view returns (bool flag) {
-		assembly ("memory-safe") {
-			flag := iszero(iszero(extcodesize(target)))
-		}
-	}
-
 	function addressOf(bytes32 salt) internal view returns (address position) {
 		assembly ("memory-safe") {
 			let ptr := mload(0x40)
@@ -134,6 +128,12 @@ contract PositionDeployer is IPositionDeployer, ContractLocker, Initializable, V
 			mstore8(0x34, 0x01)
 
 			position := keccak256(0x1e, 0x17)
+		}
+	}
+
+	function isContract(address target) internal view returns (bool flag) {
+		assembly ("memory-safe") {
+			flag := iszero(iszero(extcodesize(target)))
 		}
 	}
 
