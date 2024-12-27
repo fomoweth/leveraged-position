@@ -42,11 +42,14 @@ library Errors {
 	error InvalidUpperBound();
 	error InvalidLowerBound();
 	error ExceededMaxLimit();
-	error InsufficientPrincipalAmount();
+	error InsufficientPrincipal();
 	error InsufficientCollateral();
 	error InsufficientLiquidity();
 	error InsufficientPoolLiquidity();
 
+	error InvalidPathLength();
+	error InvalidCurrencyFirst();
+	error InvalidCurrencyLast();
 	error InvalidSwap();
 	error InsufficientAmountIn();
 	error InsufficientAmountOut();

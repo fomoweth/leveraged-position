@@ -192,6 +192,32 @@ function parseComet(bytes memory data) pure returns (CometConfig memory) {
 		});
 }
 
+function parseCometMarket(bytes memory data) pure returns (CometMarket memory) {
+	CometMarketRaw memory rawMarket = abi.decode(data, (CometMarketRaw));
+
+	CometAsset[] memory assets = new CometAsset[](rawMarket.assets.length);
+
+	for (uint256 i; i < rawMarket.assets.length; ++i) {
+		assets[i] = CometAsset({
+			symbol: rawMarket.assets[i].symbol,
+			underlying: Currency.wrap(rawMarket.assets[i].underlying),
+			feed: ICometPriceFeed(rawMarket.assets[i].feed),
+			ltv: rawMarket.assets[i].ltv
+		});
+	}
+
+	return
+		CometMarket({
+			id: bytes32(bytes(string.concat("Comet ", rawMarket.base))),
+			symbol: rawMarket.symbol,
+			comet: IComet(rawMarket.comet),
+			base: rawMarket.base,
+			underlying: Currency.wrap(rawMarket.underlying),
+			feed: ICometPriceFeed(rawMarket.feed),
+			assets: assets
+		});
+}
+
 function parseCometMarkets(bytes memory data) pure returns (CometMarket[] memory markets) {
 	CometMarketRaw[] memory rawMarkets = abi.decode(data, (CometMarketRaw[]));
 

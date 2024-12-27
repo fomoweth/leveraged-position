@@ -66,17 +66,17 @@ contract LeveragedPosition is ILeveragedPosition, Authority, Dispatcher, V3Swap 
 	Currency public immutable COLLATERAL_ASSET;
 	Currency public immutable LIABILITY_ASSET;
 
-	constructor(address _owner, address _lender, Currency _collateralAsset, Currency _LIABILITY_ASSET) {
+	constructor(address _owner, address _lender, Currency _collateralAsset, Currency _liabilityAsset) {
 		required(!_collateralAsset.isZero(), Errors.InvalidCollateralAsset.selector);
-		required(!_LIABILITY_ASSET.isZero(), Errors.InvalidLiabilityAsset.selector);
-		required(_collateralAsset != _LIABILITY_ASSET, Errors.IdenticalAssets.selector);
+		required(!_liabilityAsset.isZero(), Errors.InvalidLiabilityAsset.selector);
+		required(_collateralAsset != _liabilityAsset, Errors.IdenticalAssets.selector);
 
 		OWNER = verifyAddress(_owner);
 		LENDER = verifyContract(_lender);
 		COLLATERAL_ASSET = _collateralAsset;
-		LIABILITY_ASSET = _LIABILITY_ASSET;
+		LIABILITY_ASSET = _liabilityAsset;
 		COLLATERAL_SCALE = uint64(10 ** _collateralAsset.decimals());
-		LIABILITY_SCALE = uint64(10 ** _LIABILITY_ASSET.decimals());
+		LIABILITY_SCALE = uint64(10 ** _liabilityAsset.decimals());
 	}
 
 	function setLtvBounds(uint256 upperBound, uint256 lowerBound) external authorized {
@@ -106,7 +106,7 @@ contract LeveragedPosition is ILeveragedPosition, Authority, Dispatcher, V3Swap 
 
 		actionSlot.tstore(INCREASE_LIQUIDITY_ACTION);
 
-		required(params.amountToDeposit != 0, Errors.InsufficientPrincipalAmount.selector);
+		required(params.amountToDeposit != 0, Errors.InsufficientPrincipal.selector);
 
 		params.path.verify(COLLATERAL_ASSET, LIABILITY_ASSET);
 

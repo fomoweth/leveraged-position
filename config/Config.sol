@@ -5,7 +5,7 @@ import {stdJson} from "lib/forge-std/src/StdJson.sol";
 
 import {Currency} from "src/types/Currency.sol";
 
-import {AaveV3Config, AaveMarket, CometConfig, CometMarket, parseAaveV3, parseAaveMarkets, parseComet, parseCometMarkets} from "test/shared/Protocols.sol";
+import {AaveV3Config, AaveMarket, CometConfig, CometMarket, parseAaveV3, parseAaveMarkets, parseComet, parseCometMarket, parseCometMarkets} from "test/shared/Protocols.sol";
 
 using ConfigLibrary for Config global;
 
@@ -108,5 +108,11 @@ library ConfigLibrary {
 
 	function getCometMarkets(Config storage config) internal view returns (CometMarket[] memory) {
 		return parseCometMarkets(config.json.parseRaw(COMPOUND_V3_MARKETS_PATH));
+	}
+
+	function getCometMarket(Config storage config, string memory key) internal view returns (CometMarket memory) {
+		string memory path = string.concat(COMPOUND_V3_MARKETS_PATH, "[?(@.symbol == ", "'", key, "'", ")]");
+
+		return parseCometMarket(config.json.parseRaw(path));
 	}
 }

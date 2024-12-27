@@ -28,6 +28,7 @@ contract Configured {
 	Currency internal AAVE;
 	Currency internal COMP;
 	Currency internal LINK;
+	Currency internal UNI;
 
 	Currency[] internal allAssets;
 	Currency[] internal intermediateCurrencies;
@@ -61,6 +62,7 @@ contract Configured {
 		AAVE = config.getCurrency("AAVE");
 		COMP = config.getCurrency("COMP");
 		LINK = config.getCurrency("LINK");
+		UNI = config.getCurrency("UNI");
 
 		intermediateCurrencies = config.getIntermediateCurrencies();
 	}
@@ -79,6 +81,10 @@ contract Configured {
 
 	function getCometMarkets() internal view virtual returns (CometMarket[] memory) {
 		return config.getCometMarkets();
+	}
+
+	function getCometMarket(string memory key) internal view virtual returns (CometMarket memory) {
+		return config.getCometMarket(key);
 	}
 
 	function getChainId() internal view virtual returns (uint256) {

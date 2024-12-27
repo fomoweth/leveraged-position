@@ -159,6 +159,8 @@ interface IConfigurator {
 
 	function setGovernor(address cometProxy, address newGovernor) external;
 
+	function setPauseGuardian(address cometProxy, address newPauseGuardian) external;
+
 	function setBaseTokenPriceFeed(address cometProxy, address newBaseTokenPriceFeed) external;
 
 	function setExtensionDelegate(address cometProxy, address newExtensionDelegate) external;
