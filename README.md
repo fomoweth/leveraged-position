@@ -1,24 +1,28 @@
 # Leveraged Position
 
-LeveragedPosition is a position management contract that allows users to create leveraged positions using Uniswap V3 pools and lending protocols like Aave V3 and Compound V3.
+**LeveragedPosition** is a position management tool that enables users to create and manage leveraged positions effectively. It empowers users to amplify their exposure to a variety of assets while maintaining full control and flexibility over their positions.
 
 ## Contract Overview
 
-### Configurator
+The protocol comprises several key components:
 
-The Configurator is a core registry contract designed to manage protocol contract addresses and their implementations. It supports deploying and upgrading proxies and implements a modular architecture inspired by Aave V3.
+[Configurator](https://github.com/fomoweth/leveraged-position/blob/main/src/Configurator.sol): A core registry contract that manages protocol contract addresses and their implementations, supporting the deployment and upgrading of proxies.
 
-### PositionDeployer
+[PositionDeployer](https://github.com/fomoweth/leveraged-position/blob/main/src/PositionDeployer.sol): A factory contract that allows users to deploy `LeveragedPosition` contracts permissionlessly, facilitating the creation of new leveraged positions.
 
-The PositionDeployer contract is a factory for creating LeveragedPosition contracts, enabling users to deploy positions permissionlessly.
+[PositionDescriptor](https://github.com/fomoweth/leveraged-position/blob/main/src/PositionDescriptor.sol): A utility contract that generates human-readable descriptions and tickers for `LeveragedPosition` contracts, providing clear insights into the underlying assets and protocols associated with a position.
 
-### PositionDescriptor
+[LeveragedPosition](https://github.com/fomoweth/leveraged-position/blob/main/src/LeveragedPosition.sol): The main contract that enables users to create and manage leveraged positions in a decentralized and modular way, integrating with `Uniswap V3` for swaps and lending protocols like `Aave V3` and `Compound V3` for borrowing and collateral management.
 
-The PositionDescriptor contract is a utility for generating human-readable descriptions and tickers for LeveragedPosition contracts. It provides clear insights into the underlying assets and protocols associated with a position.
+By leveraging these components, users can engage in leveraged trading, yield strategies, and risk hedging, all within a secure and modular framework that interacts seamlessly with leading DeFi protocols.
 
-### LeveragedPosition
+For more detailed information, you can read the full article at [Introducing LeveragedPosition](https://rkim.xyz/blog/introducing-leveraged-position).
 
-The LeveragedPosition contract is a position management tool enabling users to create and manage leveraged positions in a decentralized and modular way. It integrates with Uniswap V3 for swaps and lending protocols like Aave V3 and Compound V3 for borrowing and collateral management.
+## Use Cases
+
+- **Leveraged Trading**: Create positions with leverage for amplified exposure to asset price movements.
+- **Yield Strategies**: Manage liquidity and debt positions to optimize yield farming rewards.
+- **Risk Hedging**: Hedge risks effectively while maintaining proper collateralization.
 
 ## Usage
 
@@ -52,11 +56,3 @@ $ forge build
 ```shell
 $ forge test --chain 1
 ```
-
-### Examples
-
-Deploying a LeveragedPosition
-
-- Deploy the **Configurator** and register addresses for key protocols.
-- Use the **PositionDeployer** contract to deploy a new **LeveragedPosition** contract with the desired parameters.
-- Interact with the deployed **LeveragedPosition** contract to manage liquidity, borrow assets, and adjust leverage.
