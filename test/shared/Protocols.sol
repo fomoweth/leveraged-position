@@ -6,7 +6,7 @@ import {IPoolAddressesProvider} from "src/interfaces/external/aave/v3/IPoolAddre
 import {IPoolDataProvider} from "src/interfaces/external/aave/v3/IPoolDataProvider.sol";
 import {IPoolConfigurator} from "src/interfaces/external/aave/v3/IPoolConfigurator.sol";
 import {IPool} from "src/interfaces/external/aave/v3/IPool.sol";
-import {IRewardsController} from "src/interfaces/external/Aave/V3/IRewardsController.sol";
+import {IRewardsController} from "src/interfaces/external/aave/v3/IRewardsController.sol";
 
 import {IAaveOracle} from "src/interfaces/external/aave/IAaveOracle.sol";
 import {IAToken} from "src/interfaces/external/aave/IAToken.sol";

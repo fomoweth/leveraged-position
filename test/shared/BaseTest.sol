@@ -189,8 +189,6 @@ abstract contract BaseTest is Test, Configured, Assertions, ProxyHelper {
 	function labelAll() internal virtual {
 		vm.label(address(UNISWAP_V3_FACTORY), "Uniswap V3 Factory");
 		vm.label(address(UNISWAP_V3_QUOTER), "Uniswap V3 Quoter");
-		vm.label(address(PERMIT2), "Permit2");
-		vm.label(address(FEED_REGISTRY), "FeedRegistry");
 		labelAaveV3();
 		labelComet();
 	}
